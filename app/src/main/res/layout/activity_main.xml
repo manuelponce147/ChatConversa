@@ -12,21 +12,21 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login Screen">
+        android:text="Inicio de sesión">
 
     </TextView>
 
-    <Space
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
-
-    </Space>
+        android:layout_height="wrap_content"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Usuario">
+        android:hint="Nombre de usuario">
 
     </EditText>
     <Space
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:hint="Password">
+        android:hint="Contraseña">
     </EditText>
     <Space
     android:layout_width="match_parent"
@@ -56,14 +56,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
-            android:text="Login">
+            android:text="Ingresar">
 
         </Button>
         <Button
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="Cancelar"
             >
         </Button>
     </LinearLayout>
@@ -73,6 +73,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="register"
-        android:text="Register" />
+        android:text="Registrarse" />
+
+
 
 </LinearLayout>
