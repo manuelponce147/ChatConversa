@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LogoutActivity"></activity>
+        <activity android:name=".MensajesActivity"></activity>
+        <activity android:name=".ConfiguracionActivity" />
+        <activity android:name=".LogoutActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

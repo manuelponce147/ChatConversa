@@ -79,13 +79,18 @@ public class RegisterActivity extends AppCompatActivity {
                public void onResponse(Call<RespuestaWSRegister> call, Response<RespuestaWSRegister> response) {
 
                    if(response.isSuccessful() && response!= null && response.body() != null){
+                       flag2=1;
                        Log.d("Retrofit","Exito: "+ response.body().toString());
                        Toast toast =
                                Toast.makeText(getApplicationContext(),
                                        "Registro exitoso", Toast.LENGTH_SHORT);
 
+
                        toast.show();
-                       flag2=1;
+                       Intent intent = new Intent(view.getContext(),MainActivity.class);
+                       startActivity(intent);
+                       finish();
+
 
                    }else{
 
@@ -132,9 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     if(flag2==1){
-        Intent intent = new Intent(this,MainActivity.class);
-        startActivity(intent);
-        finish();
+
     }
 
     }
