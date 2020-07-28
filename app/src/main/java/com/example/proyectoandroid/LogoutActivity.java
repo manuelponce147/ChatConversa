@@ -77,6 +77,7 @@ public class LogoutActivity extends AppCompatActivity {
         finish();
 
     }
+
     public void configuracion(View view){
 
         parametrosConfiguracion(token,id,username);
