@@ -5,7 +5,16 @@ import java.util.Objects;
 public class RespuestaWSRegister {
     private String status_code;
     private String message;
-    private Errores data;
+    private Data data;
+
+    public RespuestaWSRegister(String status_code, String message, Data data) {
+        this.status_code = status_code;
+        this.message = message;
+        this.data = data;
+    }
+
+    public RespuestaWSRegister() {
+    }
 
     @Override
     public String toString() {
@@ -47,17 +56,11 @@ public class RespuestaWSRegister {
         this.message = message;
     }
 
-    public Errores getData() {
+    public Data getData() {
         return data;
     }
 
-    public void setData(Errores data) {
-        this.data = data;
-    }
-
-    public RespuestaWSRegister(String status_code, String message, Errores data) {
-        this.status_code = status_code;
-        this.message = message;
+    public void setData(Data data) {
         this.data = data;
     }
 }

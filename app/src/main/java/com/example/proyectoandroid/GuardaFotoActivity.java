@@ -112,11 +112,11 @@ public class GuardaFotoActivity extends AppCompatActivity {
         RequestBody userRB = RequestBody.create(MediaType.parse("multipart/form-data"), username);
         RequestBody idRB = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(id));
         String tokenBearer = "Bearer " + token;
-        Call<RespuestaWSFoto> call = servicioWeb.subirImage(file,userRB,idRB,tokenBearer);
+        Call<RespuestaWS> call = servicioWeb.subirImage(file,userRB,idRB,tokenBearer);
         Log.d("Retrofit",call.toString());
-        call.enqueue(new Callback<RespuestaWSFoto>() {
+        call.enqueue(new Callback<RespuestaWS>() {
             @Override
-            public void onResponse(Call<RespuestaWSFoto> call, Response<RespuestaWSFoto> response) {
+            public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
                 Log.d("Retrofit",response.toString());
                 if(response.isSuccessful() && response != null && response.body() != null){
                     Log.d("Retrofit",response.body().getMessage());
@@ -140,7 +140,7 @@ public class GuardaFotoActivity extends AppCompatActivity {
 
 
             @Override
-            public void onFailure(Call<RespuestaWSFoto> call, Throwable t) {
+            public void onFailure(Call<RespuestaWS> call, Throwable t) {
 
             }
         });

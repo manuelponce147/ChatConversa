@@ -22,14 +22,14 @@ public interface ServicioWeb {
     Call<RespuestaWS> login(@Body Login login);
 
     @POST("user/create")
-    Call<RespuestaWSRegister> create(@Body User  user);
+    Call<RespuestaWS> create(@Body User  user);
 
     @POST("user/logout")
     Call<RespuestaWS> logout(@Body Logout  logout,@Header("Authorization")String token);
 
     @Multipart
     @POST("user/load/image")
-    Call<RespuestaWSFoto> subirImage(@Part MultipartBody.Part file, @Part("username")RequestBody username,@Part("user_id")RequestBody user_id,@Header("Authorization")String token);
+    Call<RespuestaWS> subirImage(@Part MultipartBody.Part file, @Part("username")RequestBody username,@Part("user_id")RequestBody user_id,@Header("Authorization")String token);
 
 }
 

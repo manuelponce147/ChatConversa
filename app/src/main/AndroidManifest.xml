@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-
+        android:name=".Constantes"
         android:allowBackup="true"
         android:icon="@mipmap/logo_size"
         android:label="@string/app_name"
