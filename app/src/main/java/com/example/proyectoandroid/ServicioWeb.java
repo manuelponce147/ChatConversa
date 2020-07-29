@@ -22,4 +22,7 @@ public interface ServicioWeb {
     @POST("message/send")
     Call<RespuestaWS> mSend();
 
+    @Multipart
+    @POST("user/load/image")
+    Call<RespuestaWS> subirImage(@Part MultipartBody.Part file, @Part("username") RequestBody username, @Part("user_id")RequestBody user_id, @Header("Authorization")String token);
 }

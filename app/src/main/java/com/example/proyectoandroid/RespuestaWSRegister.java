@@ -7,13 +7,22 @@ public class RespuestaWSRegister {
     private String message;
     private Data data;
 
-    public RespuestaWSRegister(){
-    }
-
     public RespuestaWSRegister(String status_code, String message, Data data) {
         this.status_code = status_code;
         this.message = message;
         this.data = data;
+    }
+
+    public RespuestaWSRegister() {
+    }
+
+    @Override
+    public String toString() {
+        return "RespuestaWSRegister{" +
+                "status_code='" + status_code + '\'' +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 
     @Override
@@ -29,15 +38,6 @@ public class RespuestaWSRegister {
     @Override
     public int hashCode() {
         return Objects.hash(status_code, message, data);
-    }
-
-    @Override
-    public String toString() {
-        return "RespuestaWSRegister{" +
-                "status_code='" + status_code + '\'' +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
     }
 
     public String getStatus_code() {
