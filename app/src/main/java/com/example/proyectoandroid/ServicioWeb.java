@@ -19,4 +19,7 @@ public interface ServicioWeb {
     @POST("user/logout")
     Call<RespuestaWS> logout(@Body Logout  logout,@Header("Authorization")String token);
 
+    @POST("message/send")
+    Call<RespuestaWS> mSend();
+
 }
