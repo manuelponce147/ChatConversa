@@ -8,15 +8,10 @@ class Errores {
     private List<String> username;
     private List<String> email;
     private List<String> token_enterprise;
-
-    public Errores() {
-    }
-
-    public Errores(List<String> username, List<String> email, List<String> token_enterprise) {
-        this.username = username;
-        this.email = email;
-        this.token_enterprise = token_enterprise;
-    }
+    private List<String> user_id;
+    private List<String> user_image;
+    private List<String> image;
+    private List<String> thumbnail;
 
     public List<String> getUsername() {
         return username;
@@ -42,19 +37,36 @@ class Errores {
         this.token_enterprise = token_enterprise;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Errores errores = (Errores) o;
-        return Objects.equals(username, errores.username) &&
-                Objects.equals(email, errores.email) &&
-                Objects.equals(token_enterprise, errores.token_enterprise);
+    public List<String> getUser_id() {
+        return user_id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(username, email, token_enterprise);
+    public void setUser_id(List<String> user_id) {
+        this.user_id = user_id;
+    }
+
+    public List<String> getUser_image() {
+        return user_image;
+    }
+
+    public void setUser_image(List<String> user_image) {
+        this.user_image = user_image;
+    }
+
+    public List<String> getImage() {
+        return image;
+    }
+
+    public void setImage(List<String> image) {
+        this.image = image;
+    }
+
+    public List<String> getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(List<String> thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     @Override
@@ -63,6 +75,10 @@ class Errores {
                 "username=" + username +
                 ", email=" + email +
                 ", token_enterprise=" + token_enterprise +
+                ", user_id=" + user_id +
+                ", user_image=" + user_image +
+                ", image=" + image +
+                ", thumbnail=" + thumbnail +
                 '}';
     }
 }

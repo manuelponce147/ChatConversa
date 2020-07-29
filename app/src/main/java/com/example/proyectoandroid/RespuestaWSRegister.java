@@ -5,15 +5,15 @@ import java.util.Objects;
 public class RespuestaWSRegister {
     private String status_code;
     private String message;
-    private Data data;
+    private Errores data;
 
-    public RespuestaWSRegister(){
-    }
-
-    public RespuestaWSRegister(String status_code, String message, Data data) {
-        this.status_code = status_code;
-        this.message = message;
-        this.data = data;
+    @Override
+    public String toString() {
+        return "RespuestaWSRegister{" +
+                "status_code='" + status_code + '\'' +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 
     @Override
@@ -29,15 +29,6 @@ public class RespuestaWSRegister {
     @Override
     public int hashCode() {
         return Objects.hash(status_code, message, data);
-    }
-
-    @Override
-    public String toString() {
-        return "RespuestaWSRegister{" +
-                "status_code='" + status_code + '\'' +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
     }
 
     public String getStatus_code() {
@@ -56,11 +47,17 @@ public class RespuestaWSRegister {
         this.message = message;
     }
 
-    public Data getData() {
+    public Errores getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(Errores data) {
+        this.data = data;
+    }
+
+    public RespuestaWSRegister(String status_code, String message, Errores data) {
+        this.status_code = status_code;
+        this.message = message;
         this.data = data;
     }
 }

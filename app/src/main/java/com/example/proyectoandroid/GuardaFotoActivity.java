@@ -2,7 +2,6 @@ package com.example.proyectoandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -61,6 +60,7 @@ public class GuardaFotoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardafoto);
         Bundle params = getIntent().getExtras();
@@ -100,21 +100,20 @@ public class GuardaFotoActivity extends AppCompatActivity {
 
     }
 
+    // This method  converts String to RequestBody
+    public static RequestBody toRequestBody (String value) {
+        RequestBody body = RequestBody.create(MediaType.parse("text/plain"), value);
+        return body ;
+    }
     private void subirImagen(){
         File archivoImagen = new File(pathPhoto);
-
-//        RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
-//
-//        MultipartBody.Part file = MultipartBody.Part.createFormData("file", archivoImagen.getName(), imagen);
-//
-//        RequestBody nombre = RequestBody.create(MediaType.parse("text"), "Móviles 2020");
-
-        Imagen imagen= new Imagen(123,username,archivoImagen);
+        RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
+        MultipartBody.Part file = MultipartBody.Part.createFormData("user_image", archivoImagen.getName(), imagen);
+        RequestBody userRB = RequestBody.create(MediaType.parse("multipart/form-data"), username);
+        RequestBody idRB = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(id));
         String tokenBearer = "Bearer " + token;
-
-
-        Call<RespuestaWSFoto> call = servicioWeb.subirImagen(imagen,tokenBearer);
-        Log.d("Retrofit",servicioWeb.subirImagen(imagen,tokenBearer).toString());
+        Call<RespuestaWSFoto> call = servicioWeb.subirImage(file,userRB,idRB,tokenBearer);
+        Log.d("Retrofit",call.toString());
         call.enqueue(new Callback<RespuestaWSFoto>() {
             @Override
             public void onResponse(Call<RespuestaWSFoto> call, Response<RespuestaWSFoto> response) {
@@ -122,67 +121,30 @@ public class GuardaFotoActivity extends AppCompatActivity {
                 if(response.isSuccessful() && response != null && response.body() != null){
                     Log.d("Retrofit",response.body().getMessage());
                     Log.d("Retrofit",response.body().getStatus_code());
+                    Log.d("Retrofit",response.body().getData().toString());
+//                    ((MyApplication) this.getApplication()).setSomeVariable("foo");
+                } else {
+
+                    Gson gson= new Gson();
+                    respuestaErronea res = new respuestaErronea();
+                    try{
+                        res = gson.fromJson(response.errorBody().string(),respuestaErronea.class);
+                        System.out.println("Respuesta: "+res);
+
+
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
                 }
-            }
+                }
+
 
             @Override
             public void onFailure(Call<RespuestaWSFoto> call, Throwable t) {
 
             }
         });
-//        Call<RespuestaWSFoto> call = servicioWeb.subirImagen(nombre,file,tokenBearer);
-//        Log.d("Body", "TOSTRING: " + image.toString());
-//        Log.d("File", "TOSTRING: " + archivoImagen.toString());
-//        Log.d("TokenBearer", "TOSTRING: " + tokenBearer);
-//        call.enqueue(new Callback<RespuestaWSFoto>() {
-//            @Override
-//            public void onResponse(Call<RespuestaWSFoto> call, Response<RespuestaWSFoto> response) {
-//                RespuestaWSFoto respuesta = response.body();
-//                Log.d("RESPUESTA", "Response: " + response);
-//                Log.d("RESPUESTA", "Response Body: " + response);
-//                if(response.isSuccessful() && response!= null && response.body() != null){
-//                    Log.d("Retrofit","Exito: "+ response.body().toString());
-//                    Toast toast =
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Registro exitoso", Toast.LENGTH_SHORT);
-//                    toast.show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RespuestaWSFoto> call, Throwable t) {
-//                Log.d("ERROR", "MSG: " + t.getMessage());
-//                Toast.makeText(GuardaFotoActivity.this, "Error subiendo", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//        );
     }
-
-//    private void subirImagen(){
-//        File archivoImagen = new File(pathPhoto);
-//
-//        RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
-//
-//        MultipartBody.Part file = MultipartBody.Part.createFormData("file", archivoImagen.getName(), imagen);
-//
-//        RequestBody nombre = RequestBody.create(MediaType.parse("multipart/form-data"), "Móviles 2020");
-//
-//        servicioWeb.subirImage(file, nombre).enqueue(new Callback<RespuestaWSFoto>() {
-//            @Override
-//            public void onResponse(Call<RespuestaWSFoto> call, Response<RespuestaWSFoto> response) {
-//                RespuestaWSFoto respuesta = response.body();
-//                Toast.makeText(GuardaFotoActivity.this, "Subida con exito", Toast.LENGTH_SHORT).show();
-//                Log.d("EXITO", "TOSTRING: " + respuesta.toString());
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RespuestaWSFoto> call, Throwable t) {
-//                Log.d("ERROR", "MSG: " + t.getMessage());
-//                Toast.makeText(GuardaFotoActivity.this, "Error subiendo", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
 
     private boolean verifyPermission(){

@@ -10,8 +10,11 @@ import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 
 import com.example.proyectoandroid.Constantes;
+
+import java.util.Map;
 
 public interface ServicioWeb {
 
@@ -24,14 +27,10 @@ public interface ServicioWeb {
     @POST("user/logout")
     Call<RespuestaWS> logout(@Body Logout  logout,@Header("Authorization")String token);
 
-//    @Multipart
+    @Multipart
     @POST("user/load/image")
-    Call<RespuestaWSFoto> subirImagen(@Body Imagen  imagen,@Header("Authorization")String token);
-//    Call<RespuestaWSFoto> subirImagen(@Body @Part("body") RequestBody body, @Part MultipartBody.Part file,@Header("Authorization")String token);
-//
-//    @Multipart
-//    @POST("/index.php/WS_SAVE_IMG")
-//    Call<RespuestaWSFoto> subirImage(@Part MultipartBody.Part file, @Part("nombre") RequestBody nombre);
+    Call<RespuestaWSFoto> subirImage(@Part MultipartBody.Part file, @Part("username")RequestBody username,@Part("user_id")RequestBody user_id,@Header("Authorization")String token);
+
 }
 
 

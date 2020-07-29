@@ -159,8 +159,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void parametrosGuardaFoto(String token, int id, String username){
         Intent intent = new Intent(this, GuardaFotoActivity.class);
         Bundle parametros = new Bundle();
-        parametros.putString("username",username);
-        parametros.putInt("id",id);
+        parametros.putString("username","testo22");
+        parametros.putInt("id",155);
         parametros.putString("token",token);
         intent.putExtras(parametros);
         startActivity(intent);
