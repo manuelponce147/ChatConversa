@@ -4,17 +4,11 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 
-import com.example.proyectoandroid.Constantes;
-
-import java.util.Map;
 
 public interface ServicioWeb {
 
@@ -29,8 +23,9 @@ public interface ServicioWeb {
 
     @Multipart
     @POST("user/load/image")
-    Call<RespuestaWS> subirImage(@Part MultipartBody.Part file, @Part("username")RequestBody username,@Part("user_id")RequestBody user_id,@Header("Authorization")String token);
+    Call<RespuestaWS> subirImage(@Part MultipartBody.Part file, @Part("username") RequestBody username, @Part("user_id")RequestBody user_id, @Header("Authorization")String token);
+
+    @POST("message/send")
+    Call<RespuestaWS> mSend();
 
 }
-
-
