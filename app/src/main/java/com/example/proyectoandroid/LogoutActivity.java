@@ -78,21 +78,27 @@ public class LogoutActivity extends AppCompatActivity {
 
     }
 
-    public void verMensajes(View view){
-        Intent intent = new Intent(this, MensajesActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     public void configuracion(View view){
 
         parametrosConfiguracion(token,id,username);
 
     }
 
-
+    public void verMensajes(View view){
+        parametrosMensaje(token,id,username);
+    }
     public void parametrosConfiguracion(String token, int id, String username){
         Intent intent = new Intent(this, ConfiguracionActivity.class);
+        Bundle parametros = new Bundle();
+        parametros.putString("username",username);
+        parametros.putInt("id",id);
+        parametros.putString("token",token);
+        intent.putExtras(parametros);
+        startActivity(intent);
+        finish();
+    }
+    public void parametrosMensaje(String token, int id, String username){
+        Intent intent = new Intent(this, MensajesActivity.class);
         Bundle parametros = new Bundle();
         parametros.putString("username",username);
         parametros.putInt("id",id);

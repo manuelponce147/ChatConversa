@@ -13,6 +13,7 @@ public class Data {
     private String thumbnail;
 
 
+
     public Data(int id, String name, String lastname, String username, String run, String email, String image, String thumbnail) {
         this.id = id;
         this.name = name;

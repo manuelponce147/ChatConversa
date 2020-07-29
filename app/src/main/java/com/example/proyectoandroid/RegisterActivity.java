@@ -73,10 +73,10 @@ public class RegisterActivity extends AppCompatActivity {
        if (!validateName() |!validateLastName() |!validateRun() | !validateUsername() |!validateEmail() | !validatePassword()) {
 
         } else {
-           Call<RespuestaWS> call = servicio.create(usuario);
-           call.enqueue(new Callback<RespuestaWS>() {
+           Call<RespuestaWSRegister> call = servicio.create(usuario);
+           call.enqueue(new Callback<RespuestaWSRegister>() {
                @Override
-               public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
+               public void onResponse(Call<RespuestaWSRegister> call, Response<RespuestaWSRegister> response) {
 
                    if(response.isSuccessful() && response!= null && response.body() != null){
                        flag2=1;
@@ -127,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
                }
 
                @Override
-               public void onFailure(Call<RespuestaWS> call, Throwable t) {
+               public void onFailure(Call<RespuestaWSRegister> call, Throwable t) {
 
                }
            });
