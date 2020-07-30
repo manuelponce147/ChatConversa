@@ -24,10 +24,27 @@ public interface ServicioWeb {
     @POST("user/logout")
     Call<RespuestaWS> logout(@Body Logout  logout,@Header("Authorization")String token);
 
+    //@POST("message/send")
+    //Call<RespuestaWS> mSend(@Body String user_id,String username, String message, String image, String latitude, String longitude,
+    //                        @Header("Authorization")String token);
+
+    @Multipart
     @POST("message/send")
-    Call<RespuestaWS> mSend();
+    Call<RespuestaWS> mSend(@Part("user_id")RequestBody user_id,
+                            @Part("username") RequestBody username,
+                            @Part("message") RequestBody message,
+                            @Part MultipartBody.Part file,
+                            @Part("latitude") RequestBody latitude,
+                            @Part("longitude") RequestBody longitude,
+                            @Header("Authorization")String token);
 
     @Multipart
     @POST("user/load/image")
     Call<RespuestaWS> subirImage(@Part MultipartBody.Part file, @Part("username") RequestBody username, @Part("user_id")RequestBody user_id, @Header("Authorization")String token);
+
+    @POST("message/get")
+    Call<RespuestaWS> mGet(@Part("user_id")RequestBody user_id,
+                           @Part("username")RequestBody username,
+                           @Header("Authorization")String token);
+
 }

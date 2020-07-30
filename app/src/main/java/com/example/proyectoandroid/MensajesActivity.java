@@ -13,7 +13,8 @@ public class MensajesActivity extends FragmentActivity {
     private String username;
     private OneFragment oneFragment;
     private TwoFragment twoFragment;
-
+    private String user_id;
+    private String username2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +23,9 @@ public class MensajesActivity extends FragmentActivity {
         token= params.getString("token");
         id= params.getInt("id");
         username= params.getString("username");
-        oneFragment = OneFragment.newInstance("","");
+        oneFragment = OneFragment.newInstance(id+"",username,token);
         twoFragment = TwoFragment.newInstance("","");
+
 
         getSupportFragmentManager().beginTransaction().add(R.id.frameLayout1, oneFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.frameLayout2, twoFragment).commit();
@@ -42,4 +44,6 @@ public class MensajesActivity extends FragmentActivity {
         startActivity(intent);
         finish();
     }
+
+
 }
