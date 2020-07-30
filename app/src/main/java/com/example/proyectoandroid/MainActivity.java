@@ -73,21 +73,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
                     if (response.isSuccessful() && response != null && response.body() != null) {
-                        if (response.body().getData().getImage()!=null){
-                            ((Constantes) getApplication()).setImage(response.body().getData().getImage());
 
-                        } else {
-                        }
-                        if (response.body().getData().getThumbnail()!=null){
-                            ((Constantes) getApplication()).setThumbnail(response.body().getData().getThumbnail());
-                        }
-                        ((Constantes) getApplication()).setId(""+response.body().getData().getId());
+                        ((Constantes) getApplication()).setId(response.body().getData().getId()+"");
                         ((Constantes) getApplication()).setName(response.body().getData().getName());
                         ((Constantes) getApplication()).setLastname(response.body().getData().getLastname());
                         ((Constantes) getApplication()).setUsername(response.body().getData().getUsername());
                         ((Constantes) getApplication()).setRun(response.body().getData().getRun());
-                        ((Constantes) getApplication()).setEmail(response.body().getData().getImage());
-                        ((Constantes) getApplication()).setToken(response.body().getToken());
+                        ((Constantes) getApplication()).setEmail(response.body().getData().getEmail());
+                        //agrega imagen si esta presente
+                        if(!response.body().getData().getImage().equals(""))
+                        ((Constantes) getApplication()).setImage(response.body().getData().getImage());
+                        //agrega miniatura si esta presente
+                        if(!response.body().getData().getThumbnail().equals(""))
+                        ((Constantes) getApplication()).setThumbnail(response.body().getData().getThumbnail());
                         Log.d("Retrofit", response.body().getStatus_code());
                         Log.d("Retrofit", response.body().getData().getId() + "");
                         Log.d("Retrofit", response.body().getToken());
@@ -173,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(this, MensajesActivity.class);
         Bundle parametros = new Bundle();
         parametros.putString("username",username);
-        parametros.putInt("id",id);
+        parametros.putInt("user_id",id);
         parametros.putString("token",token);
         intent.putExtras(parametros);
         startActivity(intent);
