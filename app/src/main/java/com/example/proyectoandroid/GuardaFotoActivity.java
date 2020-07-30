@@ -119,10 +119,17 @@ public class GuardaFotoActivity extends AppCompatActivity {
             public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
                 Log.d("Retrofit",response.toString());
                 if(response.isSuccessful() && response != null && response.body() != null){
+                    ((Constantes) getApplication()).setImage(response.body().getData().getImage());
+                    ((Constantes) getApplication()).setThumbnail(response.body().getData().getThumbnail());
                     Log.d("Retrofit",response.body().getMessage());
                     Log.d("Retrofit",response.body().getStatus_code());
                     Log.d("Retrofit",response.body().getData().toString());
-//                    ((MyApplication) this.getApplication()).setSomeVariable("foo");
+
+                    Toast toast1 =
+                            Toast.makeText(getApplicationContext(),
+                                    "Subida correctamente", Toast.LENGTH_SHORT);
+
+                    toast1.show();
                 } else {
 
                     Gson gson= new Gson();
@@ -253,7 +260,7 @@ public class GuardaFotoActivity extends AppCompatActivity {
         parametrosLogoutBack(token,id,username);
     }
     public void parametrosLogoutBack(String token, int id, String username){
-        Intent intent = new Intent(this, LogoutActivity.class);
+        Intent intent = new Intent(this, ConfiguracionActivity.class);
         Bundle parametros = new Bundle();
         parametros.putString("username",username);
         parametros.putInt("id",id);

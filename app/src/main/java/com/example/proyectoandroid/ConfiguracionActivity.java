@@ -5,11 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 public class ConfiguracionActivity extends AppCompatActivity {
     private String token;
     private int id;
     private String username;
+    private ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,11 +22,24 @@ public class ConfiguracionActivity extends AppCompatActivity {
         token= params.getString("token");
         id= params.getInt("id");
         username= params.getString("username");
+        imageView=findViewById(R.id.contenedorImagen);
+        System.out.println("PICASSO INTENTO");
+        if(((Constantes) getApplication()).getImage()!=null){
+
+            System.out.println("Presenta la imagen guardada");
+            Picasso.get().load(((Constantes) getApplication()).getImage()).into(imageView);
+        } else {
+            System.out.println("Presenta un placeholder");
+            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
+        }
+
+//        Picasso.get().load("\""+((Constantes) getApplication()).getImage()+"\"").into(imageView);
+
     }
     public void back(View view){
-        parametrosLogoutBack(token,id,username);
+        parametrosConfiguracion(token,id,username);
     }
-    public void parametrosLogoutBack(String token, int id, String username){
+    public void parametrosConfiguracion(String token, int id, String username){
         Intent intent = new Intent(this, LogoutActivity.class);
         Bundle parametros = new Bundle();
         parametros.putString("username",username);

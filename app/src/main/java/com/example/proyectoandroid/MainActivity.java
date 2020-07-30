@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
                     if (response.isSuccessful() && response != null && response.body() != null) {
+                        ((Constantes) getApplication()).setImage(response.body().getData().getImage());
+                        ((Constantes) getApplication()).setThumbnail(response.body().getData().getThumbnail());
                         Log.d("Retrofit", response.body().getStatus_code());
                         Log.d("Retrofit", response.body().getData().getId() + "");
                         Log.d("Retrofit", response.body().getToken());
