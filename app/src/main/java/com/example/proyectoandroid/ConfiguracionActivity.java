@@ -24,18 +24,26 @@ public class ConfiguracionActivity extends AppCompatActivity {
         username= params.getString("username");
         imageView=findViewById(R.id.contenedorImagen);
         System.out.println("PICASSO INTENTO");
-        if(((Constantes) getApplication()).getImage()!=null){
+        System.out.println(((Constantes) getApplication()).getId());
+        System.out.println(((Constantes) getApplication()).getName());
+        System.out.println(((Constantes) getApplication()).getLastname());
+        System.out.println(((Constantes) getApplication()).getUsername());
+        System.out.println(((Constantes) getApplication()).getRun());
+        System.out.println(((Constantes) getApplication()).getEmail());
+        System.out.println(((Constantes) getApplication()).getImage());
+        System.out.println(((Constantes) getApplication()).getImage());
+        Picasso.get().load("http://www.omdbapi.com/src/poster.jpg").into(imageView);
+//        if(((Constantes) getApplication()).getImage()!=null){
+//            System.out.println("Presenta la imagen guardada");
+//            System.out.println(((Constantes) getApplication()).getImage());
+////            Picasso.get().load(""+((Constantes) getApplication()).getImage()).into(imageView);
+//            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
+//        } else {
+//            System.out.println("Presenta un placeholder");
+//            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
+//        }
 
-            System.out.println("Presenta la imagen guardada");
-            System.out.println(((Constantes) getApplication()).getImage());
-//            Picasso.get().load(""+((Constantes) getApplication()).getImage()).into(imageView);
-            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
-        } else {
-            System.out.println("Presenta un placeholder");
-            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
-        }
-
-        Picasso.get().load("\""+((Constantes) getApplication()).getImage()+"\"").into(imageView);
+//        Picasso.get().load("\""+((Constantes) getApplication()).getImage()+"\"").into(imageView);
 
     }
     public void back(View view){

@@ -53,6 +53,15 @@ public class Constantes extends Application {
     }
 
     public Constantes() {
+        id=null;
+        name=null;
+        lastname=null;
+        username=null;
+        run=null;
+        email=null;
+        thumbnail=null;
+        image=null;
+        token=null;
     }
 
     public String getId() {
