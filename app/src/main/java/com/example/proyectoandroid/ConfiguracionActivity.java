@@ -27,13 +27,15 @@ public class ConfiguracionActivity extends AppCompatActivity {
         if(((Constantes) getApplication()).getImage()!=null){
 
             System.out.println("Presenta la imagen guardada");
-            Picasso.get().load(((Constantes) getApplication()).getImage()).into(imageView);
+            System.out.println(((Constantes) getApplication()).getImage());
+//            Picasso.get().load(""+((Constantes) getApplication()).getImage()).into(imageView);
+            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
         } else {
             System.out.println("Presenta un placeholder");
             Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
         }
 
-//        Picasso.get().load("\""+((Constantes) getApplication()).getImage()+"\"").into(imageView);
+        Picasso.get().load("\""+((Constantes) getApplication()).getImage()+"\"").into(imageView);
 
     }
     public void back(View view){

@@ -88,8 +88,6 @@ public class RegisterActivity extends AppCompatActivity {
                        ((Constantes) getApplication()).setEmail(email.getEditText().getText().toString());
                        ((Constantes) getApplication()).setToken(token.getEditText().getText().toString());
 
-
-
                        flag2=1;
                        Log.d("Retrofit","Exito: "+ response.body().toString());
                        Toast toast =

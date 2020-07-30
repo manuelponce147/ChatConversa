@@ -22,13 +22,9 @@ public interface ServicioWeb {
     Call<RespuestaWS> create(@Body User  user);
 
     @POST("user/logout")
-    Call<RespuestaWS> logout(@Body Logout  logout,@Header("Authorization")String token);
+    Call<RespuestaWS> logout(@Body Logout  logout,
+                             @Header("Authorization")String token);
 
-    //@POST("message/send")
-    //Call<RespuestaWS> mSend(@Body String user_id,String username, String message, String image, String latitude, String longitude,
-    //                        @Header("Authorization")String token);
-
-    @Multipart
     @POST("message/send")
     Call<RespuestaWS> mSend(@Part("user_id")RequestBody user_id,
                             @Part("username") RequestBody username,
