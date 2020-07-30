@@ -19,7 +19,7 @@ public interface ServicioWeb {
     Call<RespuestaWS> login(@Body Login login);
 
     @POST("user/create")
-    Call<RespuestaWSRegister> create(@Body User  user);
+    Call<RespuestaWS> create(@Body User  user);
 
     @POST("user/logout")
     Call<RespuestaWS> logout(@Body Logout  logout,@Header("Authorization")String token);
