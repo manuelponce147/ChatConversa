@@ -120,7 +120,9 @@ public class GuardaFotoActivity extends AppCompatActivity {
                 Log.d("Retrofit",response.toString());
                 if(response.isSuccessful() && response != null && response.body() != null){
                     ((Constantes) getApplication()).setImage(response.body().getData().getImage());
+                    System.out.println(response.body().getData().getImage());
                     ((Constantes) getApplication()).setThumbnail(response.body().getData().getThumbnail());
+                    System.out.println(response.body().getData().getThumbnail());
                     Log.d("Retrofit",response.body().getMessage());
                     Log.d("Retrofit",response.body().getStatus_code());
                     Log.d("Retrofit",response.body().getData().toString());
@@ -143,7 +145,7 @@ public class GuardaFotoActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                }
+            }
 
 
             @Override
