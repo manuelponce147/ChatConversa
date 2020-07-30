@@ -25,8 +25,8 @@ public class MensajesActivity extends FragmentActivity {
         oneFragment = OneFragment.newInstance("","");
         twoFragment = TwoFragment.newInstance("","");
 
-        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout1,oneFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout2,twoFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout1, oneFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout2, twoFragment).commit();
     }
     public void back(View view){
         parametrosLogoutBack(token,id,username);

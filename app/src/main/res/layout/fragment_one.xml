@@ -6,20 +6,22 @@
     tools:context=".OneFragment">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/cuadradoMensaje"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:hint="Escribir Mensaje..." />
 
         <Button
-            android:id="@+id/enviarButton"
+            android:id="@+id/enviarBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="send"
             android:text="Enviar" />
 
     </com.google.android.material.textfield.TextInputLayout>
