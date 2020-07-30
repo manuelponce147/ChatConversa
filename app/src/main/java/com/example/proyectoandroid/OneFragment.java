@@ -16,9 +16,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,17 +40,21 @@ public class OneFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
+    private static final String ARG_PARAM4 = "param4";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private String mParam3;
+    private String mParam4;
     private TextInputLayout mensajeLayout;
     private Button enviarMensaje;
     private ServicioWeb servicio;
     private String username;
     private String user_id;
     private String token;
+    private String pathPhoto;
+
 
 
     public OneFragment() {
@@ -64,12 +70,13 @@ public class OneFragment extends Fragment {
      * @return A new instance of fragment OneFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OneFragment newInstance(String param1, String param2,String param3) {
+    public static OneFragment newInstance(String param1, String param2,String param3,String param4) {
         OneFragment fragment = new OneFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         args.putString(ARG_PARAM3, param3);
+        args.putString(ARG_PARAM4, param4);
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,6 +88,7 @@ public class OneFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             mParam3 = getArguments().getString(ARG_PARAM3);
+            mParam4 = getArguments().getString(ARG_PARAM4);
         }
         Retrofit retrofit= new Retrofit.Builder()
                 .baseUrl("http://chat-conversa.unnamed-chile.com/ws/")
@@ -104,11 +112,15 @@ public class OneFragment extends Fragment {
                 user_id = mParam1;
                 username = mParam2;
                 token = "Bearer " + mParam3;
+                pathPhoto = mParam4;
                 RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
                 RequestBody idRb =RequestBody.create(MediaType.parse("multipart/form-data"), user_id);
+                File archivoImagen = new File(pathPhoto);
+                RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
+                MultipartBody.Part file = MultipartBody.Part.createFormData("user_image", "imagen", imagen);
                 RequestBody msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
                         mensajeLayout.getEditText().getText().toString());
-                Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,null,
+                Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,file,
                         null,null,token);
                 call.enqueue(new Callback<RespuestaWS>() {
                     @Override

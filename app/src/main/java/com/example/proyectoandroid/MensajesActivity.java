@@ -15,6 +15,7 @@ public class MensajesActivity extends FragmentActivity {
     private TwoFragment twoFragment;
     private String user_id;
     private String username2;
+    private String pathPhoto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +24,8 @@ public class MensajesActivity extends FragmentActivity {
         token= params.getString("token");
         id= params.getInt("id");
         username= params.getString("username");
-        oneFragment = OneFragment.newInstance(id+"",username,token);
+        pathPhoto = params.getString("imagen");
+        oneFragment = OneFragment.newInstance(id+"",username,token,pathPhoto);
         twoFragment = TwoFragment.newInstance("","");
 
 

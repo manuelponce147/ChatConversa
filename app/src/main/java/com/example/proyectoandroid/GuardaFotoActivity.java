@@ -265,6 +265,7 @@ public class GuardaFotoActivity extends AppCompatActivity {
         parametros.putString("username",username);
         parametros.putInt("id",id);
         parametros.putString("token",token);
+        parametros.putString("imagen",pathPhoto);
         intent.putExtras(parametros);
         startActivity(intent);
         finish();
