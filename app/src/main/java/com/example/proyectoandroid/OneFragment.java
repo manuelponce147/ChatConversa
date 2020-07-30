@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,8 +48,8 @@ public class OneFragment extends Fragment {
     private String mParam2;
     private String mParam3;
     private String mParam4;
-    private TextInputLayout mensajeLayout;
-    private Button enviarMensaje;
+    private EditText mensajeLayout;
+    private ImageButton enviarMensaje;
     private ServicioWeb servicio;
     private String username;
     private String user_id;
@@ -103,24 +104,25 @@ public class OneFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_one
                 , container, false);
-        mensajeLayout = (TextInputLayout) rootView.findViewById(R.id.cuadradoMensaje);
-        enviarMensaje = (Button) rootView.findViewById(R.id.enviarBtn);
+        mensajeLayout = (EditText) rootView.findViewById(R.id.cuadradoMensaje);
+        enviarMensaje = (ImageButton) rootView.findViewById(R.id.enviarBtn);
         enviarMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Retrofit", mensajeLayout.getEditText().getText().toString());
+                Log.d("Retrofit", mensajeLayout.getText().toString());
                 user_id = mParam1;
                 username = mParam2;
                 token = "Bearer " + mParam3;
                 pathPhoto = mParam4;
                 RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
                 RequestBody idRb =RequestBody.create(MediaType.parse("multipart/form-data"), user_id);
-                File archivoImagen = new File(pathPhoto);
-                RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
-                MultipartBody.Part file = MultipartBody.Part.createFormData("user_image", "imagen", imagen);
+                //Log.d("Retrofit", pathPhoto);
+                //File archivoImagen = new File(pathPhoto);
+                //RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
+               // MultipartBody.Part file = MultipartBody.Part.createFormData("user_image", "imagen", imagen);
                 RequestBody msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
-                        mensajeLayout.getEditText().getText().toString());
-                Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,file,
+                        mensajeLayout.getText().toString());
+                Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,null,
                         null,null,token);
                 call.enqueue(new Callback<RespuestaWS>() {
                     @Override

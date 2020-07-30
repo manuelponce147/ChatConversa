@@ -26,7 +26,7 @@ public class MensajesActivity extends FragmentActivity {
         username= params.getString("username");
         pathPhoto = params.getString("imagen");
         oneFragment = OneFragment.newInstance(id+"",username,token,pathPhoto);
-        twoFragment = TwoFragment.newInstance("","");
+        twoFragment = TwoFragment.newInstance(id+"",username,token);
 
 
         getSupportFragmentManager().beginTransaction().add(R.id.frameLayout1, oneFragment).commit();

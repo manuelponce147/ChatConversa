@@ -42,8 +42,9 @@ public interface ServicioWeb {
     @POST("user/load/image")
     Call<RespuestaWS> subirImage(@Part MultipartBody.Part file, @Part("username") RequestBody username, @Part("user_id")RequestBody user_id, @Header("Authorization")String token);
 
+    @Multipart
     @POST("message/get")
-    Call<RespuestaWS> mGet(@Part("user_id")RequestBody user_id,
+    Call<RespuestaWSLastM> mGet(@Part("user_id")RequestBody user_id,
                            @Part("username")RequestBody username,
                            @Header("Authorization")String token);
 
