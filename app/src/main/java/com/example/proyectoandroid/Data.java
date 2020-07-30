@@ -7,7 +7,6 @@ public class Data {
     private String name;
     private String date;
     private String message;
-
     private String lastname;
     private String username;
     private String run;

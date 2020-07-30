@@ -8,7 +8,7 @@ public class FragmentViewModel extends ViewModel {
     private final MutableLiveData<DatoFragment>datoFragment = new MutableLiveData<DatoFragment>();
 
     public FragmentViewModel(){
-        datoFragment.postValue(new DatoFragment("",""));
+        datoFragment.postValue(new DatoFragment(""));
     }
 
     public LiveData<DatoFragment>obtenerDato(){

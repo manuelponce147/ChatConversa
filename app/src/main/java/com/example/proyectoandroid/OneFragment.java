@@ -5,10 +5,18 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +33,17 @@ public class OneFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextInputLayout mensajeLayout;
     private Button enviarMensaje;
+    private ServicioWeb servicio;
+    private Data data;
+    private User user;
+    private int id;
+    private String date;
+    private String message;
+    private String image;
+    private String thumbnail;
+
 
     public OneFragment() {
         // Required empty public constructor
@@ -56,6 +74,11 @@ public class OneFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        Retrofit retrofit= new Retrofit.Builder()
+                .baseUrl("http://chat-conversa.unnamed-chile.com/ws/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        servicio = retrofit.create(ServicioWeb.class);
 
     }
 
@@ -63,12 +86,20 @@ public class OneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.activity_mensajes
+        View rootView = inflater.inflate(R.layout.fragment_one
                 , container, false);
-        enviarMensaje = (Button) rootView.findViewById(R.id.enviarButton);
+        View rootView2 = inflater.inflate(R.layout.activity_mensajes
+                , container, false);
+        mensajeLayout = (TextInputLayout) rootView.findViewById(R.id.cuadradoMensaje);
+        enviarMensaje = (Button) rootView.findViewById(R.id.enviarBtn);
+        enviarMensaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Retrofit", mensajeLayout.toString());
+            }
+        });
         return  rootView;
     }
-
 
 
 
