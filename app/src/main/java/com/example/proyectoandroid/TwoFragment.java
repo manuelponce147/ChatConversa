@@ -1,20 +1,19 @@
 package com.example.proyectoandroid;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.service.autofill.TextValueSanitizer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -30,6 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * create an instance of this fragment.
  */
 public class TwoFragment extends Fragment {
+    RecyclerView rv;
+    Adapter adapter;
+    List<Data> mensajes;
     private TextView texto1;
     private FragmentViewModel fragmentViewModel;
     private ServicioWeb servicio;
@@ -85,6 +87,7 @@ public class TwoFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         servicio = retrofit.create(ServicioWeb.class);
+        Context actual=this.getContext();
     }
 
     @Override
@@ -97,27 +100,39 @@ public class TwoFragment extends Fragment {
         token = "Bearer " + mParam3;
         RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
         RequestBody idRb =RequestBody.create(MediaType.parse("multipart/form-data"), user_id);
+
+        /////
+
+        ////
         Call<RespuestaWSLastM> call = servicio.mGet(idRb,usernameRb,token);
         call.enqueue(new Callback<RespuestaWSLastM>() {
             @Override
             public void onResponse(Call<RespuestaWSLastM> call, Response<RespuestaWSLastM> response) {
                 if(response.isSuccessful()){
                     Data data = new Data();
-                    if(response.body().getData().length >2) {
-                        for (int i = 0; i < response.body().getData().length; i++) {
-                            if(response.body().getData()[i]!=null) {
-                                Log.d("Retrofit", response.body().getMessage());
-                                Log.d("Retrofit", response.body().getData()[i].toString());
-                                data = response.body().getData()[i];
-                                String mensaje = response.body().getData()[i].getMessage();
-                                RecyclerView recycler = root.findViewById(R.id.containerF2);
-                                EditText editText = new EditText(getActivity());
-                                editText.setText("Hello");
-                                recycler.addView(editText);
-                            }
-                        }
+//                    mensajes.removeAll(mensajes);
+                    rv = root.findViewById(R.id.containerF2);
+                    rv.setLayoutManager(new LinearLayoutManager(getContext()));
+                    mensajes=response.body().getData();
+                    adapter=new Adapter(mensajes);
+                    rv.setAdapter(adapter);
+//                    adapter.notifyDataSetChanged();
+
+//                    if(response.body().getData().length >2) {
+//                        for (int i = 0; i < response.body().getData().length; i++) {
+//                            if(response.body().getData()[i]!=null) {
+//                                Log.d("Retrofit", response.body().getMessage());
+//                                Log.d("Retrofit", response.body().getData()[i].toString());
+//                                data = response.body().getData()[i];
+//                                String mensaje = response.body().getData()[i].getMessage();
+
+//                                EditText editText = new EditText(getActivity());
+//                                editText.setText("Hello");
+//                                recycler.addView(editText);
+//                            }
+//                        }
                     }
-                }
+//                }
             }
 
             @Override
