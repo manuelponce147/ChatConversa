@@ -117,7 +117,6 @@ public class GuardaFotoActivity extends AppCompatActivity {
         return body ;
     }
     private void subirImagen(){
-        Uri uri= Uri.parse(pathPhoto);
         File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(),"temp")));
         RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
         MultipartBody.Part file = MultipartBody.Part.createFormData("user_image", archivoImagen.getName(), imagen);
