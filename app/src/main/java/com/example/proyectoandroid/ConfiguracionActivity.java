@@ -32,16 +32,16 @@ public class ConfiguracionActivity extends AppCompatActivity {
         System.out.println(((Constantes) getApplication()).getEmail());
         System.out.println(((Constantes) getApplication()).getImage());
         System.out.println(((Constantes) getApplication()).getImage());
-        Picasso.get().load("http://www.omdbapi.com/src/poster.jpg").into(imageView);
-//        if(((Constantes) getApplication()).getImage()!=null){
-//            System.out.println("Presenta la imagen guardada");
-//            System.out.println(((Constantes) getApplication()).getImage());
-////            Picasso.get().load(""+((Constantes) getApplication()).getImage()).into(imageView);
+//        Picasso.get().load("http://www.omdbapi.com/src/poster.jpg").into(imageView);
+        if(((Constantes) getApplication()).getImage()!=null){
+            System.out.println("Presenta la imagen guardada");
+            System.out.println(((Constantes) getApplication()).getImage());
+            Picasso.get().load(""+((Constantes) getApplication()).getImage()).into(imageView);
 //            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
-//        } else {
-//            System.out.println("Presenta un placeholder");
-//            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
-//        }
+        } else {
+            System.out.println("Presenta un placeholder");
+            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
+        }
 
 //        Picasso.get().load("\""+((Constantes) getApplication()).getImage()+"\"").into(imageView);
 
