@@ -15,6 +15,9 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -47,6 +50,33 @@ public class MensajesActivity extends FragmentActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         servicio = retrofit.create(ServicioWeb.class);
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
+                RequestBody idRb =RequestBody.create(MediaType.parse("multipart/form-data"), id+"");
+                Call<RespuestaWSLastM> call = servicio.mGet(idRb,usernameRb,tokenB1);
+                call.enqueue(new Callback<RespuestaWSLastM>() {
+                    @Override
+                    public void onResponse(Call<RespuestaWSLastM> call, Response<RespuestaWSLastM> response) {
+                        if(response.isSuccessful()){
+                            Data data = new Data();
+//                  mensajes.removeAll(mensajes);
+                            rv = findViewById(R.id.containerF2);
+                            rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            mensajes=response.body().getData();
+                            adapter=new Adapter(mensajes);
+                            rv.setAdapter(adapter);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RespuestaWSLastM> call, Throwable t) {
+
+                    }
+                });
+            }
+        }, 0, 1000);//put here time 1000 milliseconds=1 second
         //////////////
         //////////////
         RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
