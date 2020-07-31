@@ -65,7 +65,7 @@ public class MensajesActivity extends FragmentActivity {
                             rv = findViewById(R.id.containerF2);
                             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                             mensajes=response.body().getData();
-                            adapter=new Adapter(mensajes);
+                            adapter=new Adapter(mensajes, getApplicationContext());
                             rv.setAdapter(adapter);
                         }
                     }
@@ -91,7 +91,7 @@ public class MensajesActivity extends FragmentActivity {
                     rv = findViewById(R.id.containerF2);
                     rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     mensajes=response.body().getData();
-                    adapter=new Adapter(mensajes);
+                    adapter=new Adapter(mensajes,getApplicationContext());
                     rv.setAdapter(adapter);
                 }
             }
@@ -130,7 +130,7 @@ public class MensajesActivity extends FragmentActivity {
                                 rv = findViewById(R.id.containerF2);
                                 rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                                 mensajes=response.body().getData();
-                                adapter=new Adapter(mensajes);
+                                adapter=new Adapter(mensajes,getApplicationContext());
                                 rv.setAdapter(adapter);
                             }
                         }

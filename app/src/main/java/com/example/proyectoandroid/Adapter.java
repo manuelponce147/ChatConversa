@@ -1,5 +1,6 @@
 package com.example.proyectoandroid;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 
     public static class MensajesViewHolder extends RecyclerView.ViewHolder{
-        TextView textViewNombre, textViewMensaje, textViewHoraMensaje, textViewFechaMensaje;
+        TextView textViewNombre, textViewMensaje, textViewHoraMensaje;
         ImageView imageViewFotoPerfilMensaje, imageViewMensajeFoto;
 
 
@@ -24,16 +27,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
             textViewNombre =itemView.findViewById(R.id.nombre);
             textViewMensaje=itemView.findViewById(R.id.mensaje);
             textViewHoraMensaje=itemView.findViewById(R.id.horaMensaje);
-            textViewFechaMensaje=itemView.findViewById(R.id.fechaMensaje);
             imageViewFotoPerfilMensaje=itemView.findViewById(R.id.fotoPerfilMensaje);
             imageViewMensajeFoto=itemView.findViewById(R.id.mensajeFoto);
+
 
         }
     }
     List<Data> mensajes;
+    Context context;
 
-    public Adapter (List<Data> mensajes){
-
+    public Adapter (List<Data> mensajes, Context context){
+        this.context=context;
         this.mensajes=mensajes;
     }
 
@@ -53,8 +57,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MensajesViewHolder holder, int position) {
         Data mensaje= mensajes.get(position);
-        holder.textViewNombre.setText(mensaje.getUsername());
+        holder.textViewNombre.setText(mensaje.getUser().getUsername());
         holder.textViewMensaje.setText(mensaje.getMessage());
+        holder.textViewHoraMensaje.setText(mensaje.getDate());
+        if (mensaje.getImage()!=null){
+            Glide.with(context)
+                    .load(mensaje.getImage())
+                    .into(holder.imageViewMensajeFoto);
+        }
+
+
     }
 
     @Override

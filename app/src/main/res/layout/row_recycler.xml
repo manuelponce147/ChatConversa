@@ -38,12 +38,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="00:00"/>
-                <TextView
-                    android:id="@+id/fechaMensaje"
-                    android:layout_marginHorizontal="10pt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="14-05-2020"/>
             </LinearLayout>
             <TextView
                 android:visibility="visible"

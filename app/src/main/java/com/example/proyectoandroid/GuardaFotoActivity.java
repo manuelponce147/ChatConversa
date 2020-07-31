@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,6 +74,13 @@ public class GuardaFotoActivity extends AppCompatActivity {
 
         subirFoto = findViewById(R.id.subirFoto);
 
+        if(((Constantes) getApplication()).getImage()!=null){
+            System.out.println("Presenta la imagen guardada");
+            System.out.println(((Constantes) getApplication()).getImage());
+            Picasso.get().load(""+((Constantes) getApplication()).getImage()).into(contenedorFoto);
+//            Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png").into(imageView);
+        }
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://chat-conversa.unnamed-chile.com/ws/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -114,6 +122,7 @@ public class GuardaFotoActivity extends AppCompatActivity {
         String tokenBearer = "Bearer " + token;
         Call<RespuestaWS> call = servicioWeb.subirImage(file,userRB,idRB,tokenBearer);
         Log.d("Retrofit",call.toString());
+
         call.enqueue(new Callback<RespuestaWS>() {
             @Override
             public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
