@@ -39,7 +39,7 @@
 
             <EditText
                 android:id="@+id/mensajeLayout"
-                android:layout_width="338dp"
+                android:layout_width="366dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:hint="Escribe un Mensaje..."
