@@ -3,6 +3,7 @@ package com.example.proyectoandroid;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
+
+    public static class MensajesViewHolder extends RecyclerView.ViewHolder{
+        TextView textViewNombre, textViewMensaje, textViewHoraMensaje, textViewFechaMensaje;
+        ImageView imageViewFotoPerfilMensaje, imageViewMensajeFoto;
+
+
+
+        public MensajesViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textViewNombre =itemView.findViewById(R.id.nombre);
+            textViewMensaje=itemView.findViewById(R.id.mensaje);
+            textViewHoraMensaje=itemView.findViewById(R.id.horaMensaje);
+            textViewFechaMensaje=itemView.findViewById(R.id.fechaMensaje);
+            imageViewFotoPerfilMensaje=itemView.findViewById(R.id.fotoPerfilMensaje);
+            imageViewMensajeFoto=itemView.findViewById(R.id.mensajeFoto);
+
+        }
+    }
     List<Data> mensajes;
 
     public Adapter (List<Data> mensajes){
@@ -43,14 +62,5 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
         return mensajes.size();
     }
 
-    public static class MensajesViewHolder extends RecyclerView.ViewHolder{
-        TextView textViewNombre, textViewMensaje;
 
-
-        public MensajesViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textViewNombre=itemView.findViewById(R.id.nombre);
-            textViewMensaje=itemView.findViewById(R.id.mensaje);
-        }
-    }
 }
