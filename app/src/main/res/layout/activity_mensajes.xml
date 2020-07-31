@@ -29,9 +29,17 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/botonGaleria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:drawable/ic_menu_gallery"
+                android:onClick="enviarFoto" />
+
             <EditText
                 android:id="@+id/mensajeLayout"
-                android:layout_width="366dp"
+                android:layout_width="338dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:hint="Escribe un Mensaje..."
