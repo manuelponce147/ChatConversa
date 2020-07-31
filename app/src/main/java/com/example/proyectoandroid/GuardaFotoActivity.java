@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.iceteck.silicompressorr.FileUtils;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -56,6 +58,7 @@ public class GuardaFotoActivity extends AppCompatActivity {
             new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE" };
 
     private String pathPhoto;
+    private String pathPhotoCompressed;
 
     private ServicioWeb servicioWeb;
 
@@ -114,7 +117,8 @@ public class GuardaFotoActivity extends AppCompatActivity {
         return body ;
     }
     private void subirImagen(){
-        File archivoImagen = new File(pathPhoto);
+        Uri uri= Uri.parse(pathPhoto);
+        File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(),"temp")));
         RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
         MultipartBody.Part file = MultipartBody.Part.createFormData("user_image", archivoImagen.getName(), imagen);
         RequestBody userRB = RequestBody.create(MediaType.parse("multipart/form-data"), username);
@@ -207,8 +211,10 @@ public class GuardaFotoActivity extends AppCompatActivity {
             Intent iniciarCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if(iniciarCamara.resolveActivity(getPackageManager()) != null){
                 File photoFile = null;
+//                File photoFileCompressed = null;
                 try{
                     photoFile = createFilePhoto();
+//                    photoFileCompressed=createFilePhotoTemp();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -216,7 +222,11 @@ public class GuardaFotoActivity extends AppCompatActivity {
                     Uri photoUri = FileProvider.getUriForFile(this,
                             "com.example.proyectoandroid.fileprovider",
                             photoFile);
+//                    Uri photoUriCompressed = FileProvider.getUriForFile(this,
+//                            "com.example.proyectoandroid.fileprovider",
+//                            photoFileCompressed);
                     iniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//                    iniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, photoUriCompressed);
                     startActivityForResult(iniciarCamara, REQUEST_CAMERA);
                 }
             }
@@ -266,6 +276,20 @@ public class GuardaFotoActivity extends AppCompatActivity {
         pathPhoto = photo.getAbsolutePath();
         return photo;
     }
+
+//    private File createFilePhotoTemp() throws IOException {
+//        String timestamp =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        String file_name = "JPEG_" + timestamp + "_";
+//        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        File photo = File.createTempFile(
+//                file_name,
+//                "temp.jpg",
+//                storageDir
+//        );
+//        pathPhotoCompressed = photo.getAbsolutePath();
+//        return photo;
+//    }
+//
 
     public void back(View view){
         parametrosLogoutBack(token,id,username);

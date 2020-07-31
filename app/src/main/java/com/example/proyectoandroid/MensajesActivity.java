@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.gson.Gson;
 
@@ -33,8 +34,9 @@ public class MensajesActivity extends FragmentActivity {
     private String username;
     private EditText mensajeLayoutTxt;
     private ServicioWeb servicio;
+    private ImageButton imageButton;
     RecyclerView rv;
-    Adapter adapter;
+    private Adapter adapter;
     List<Data> mensajes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,49 +52,24 @@ public class MensajesActivity extends FragmentActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         servicio = retrofit.create(ServicioWeb.class);
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
-                RequestBody idRb =RequestBody.create(MediaType.parse("multipart/form-data"), id+"");
-                Call<RespuestaWSLastM> call = servicio.mGet(idRb,usernameRb,tokenB1);
-                call.enqueue(new Callback<RespuestaWSLastM>() {
-                    @Override
-                    public void onResponse(Call<RespuestaWSLastM> call, Response<RespuestaWSLastM> response) {
-                        if(response.isSuccessful()){
-                            Data data = new Data();
-//                  mensajes.removeAll(mensajes);
-                            rv = findViewById(R.id.containerF2);
-                            rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                            mensajes=response.body().getData();
-                            adapter=new Adapter(mensajes, getApplicationContext());
-                            rv.setAdapter(adapter);
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<RespuestaWSLastM> call, Throwable t) {
 
-                    }
-                });
-            }
-        }, 0, 1000);//put here time 1000 milliseconds=1 second
-        //////////////
-        //////////////
         RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
         RequestBody idRb =RequestBody.create(MediaType.parse("multipart/form-data"), id+"");
         Call<RespuestaWSLastM> call = servicio.mGet(idRb,usernameRb,tokenB1);
+        rv = findViewById(R.id.containerF2);
+        rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         call.enqueue(new Callback<RespuestaWSLastM>() {
             @Override
             public void onResponse(Call<RespuestaWSLastM> call, Response<RespuestaWSLastM> response) {
                 if(response.isSuccessful()){
                     Data data = new Data();
 //                  mensajes.removeAll(mensajes);
-                    rv = findViewById(R.id.containerF2);
-                    rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
                     mensajes=response.body().getData();
                     adapter=new Adapter(mensajes,getApplicationContext());
                     rv.setAdapter(adapter);
+
                 }
             }
 
@@ -162,6 +139,7 @@ public class MensajesActivity extends FragmentActivity {
         });
 
     }
+
 
 
     public void parametrosLogoutBack(String token, int id, String username){
