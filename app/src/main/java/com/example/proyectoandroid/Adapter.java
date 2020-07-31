@@ -18,6 +18,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
         this.mensajes=mensajes;
     }
 
+    public void addMensaje(Data data){
+        mensajes.add(data);
+         notifyItemInserted(mensajes.size());
+    }
+
     @NonNull
     @Override
     public MensajesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
