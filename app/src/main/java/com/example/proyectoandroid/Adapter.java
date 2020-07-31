@@ -20,7 +20,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 
     public void addMensaje(Data data){
         mensajes.add(data);
-         notifyItemInserted(mensajes.size());
+        notifyItemInserted(mensajes.size());
     }
 
     @NonNull

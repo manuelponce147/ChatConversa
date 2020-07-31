@@ -90,8 +90,26 @@ public class MensajesActivity extends FragmentActivity {
             public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
                 Log.d("Retrofit",response.toString());
                 if(response.isSuccessful() && response != null && response.body() != null){
-                    Log.d("Retrofit", response.body().getData().toString());
+                    Call<RespuestaWSLastM> call2 = servicio.mGet(idRb,usernameRb,tokenB);
+                    call2.enqueue(new Callback<RespuestaWSLastM>() {
+                        @Override
+                        public void onResponse(Call<RespuestaWSLastM> call, Response<RespuestaWSLastM> response) {
+                            if(response.isSuccessful()){
+                                Data data = new Data();
+            //                  mensajes.removeAll(mensajes);
+                                rv = findViewById(R.id.containerF2);
+                                rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                mensajes=response.body().getData();
+                                adapter=new Adapter(mensajes);
+                                rv.setAdapter(adapter);
+                            }
+                        }
 
+                        @Override
+                        public void onFailure(Call<RespuestaWSLastM> call, Throwable t) {
+
+                        }
+                    });
                 }else {
 
                     Gson gson= new Gson();
