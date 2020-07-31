@@ -65,6 +65,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
                     .load(mensaje.getImage())
                     .into(holder.imageViewMensajeFoto);
         }
+        if (mensaje.getUser().getUser_thumbnail()!=null){
+            Glide.with(context)
+                    .load(mensaje.getImage())
+                    .into(holder.imageViewFotoPerfilMensaje);
+        }
 
 
     }
