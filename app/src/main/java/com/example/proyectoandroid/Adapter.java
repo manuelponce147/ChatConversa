@@ -60,14 +60,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
         holder.textViewNombre.setText(mensaje.getUser().getUsername());
         holder.textViewMensaje.setText(mensaje.getMessage());
         holder.textViewHoraMensaje.setText(mensaje.getDate());
-        if (mensaje.getImage()!=null){
+        if (mensaje.getThumbnail()!=null){
             Glide.with(context)
                     .load(mensaje.getImage())
                     .into(holder.imageViewMensajeFoto);
         }
         if (mensaje.getUser().getUser_thumbnail()!=null){
             Glide.with(context)
-                    .load(mensaje.getImage())
+                    .load(mensaje.getUser().getUser_thumbnail())
                     .into(holder.imageViewFotoPerfilMensaje);
         }
 
