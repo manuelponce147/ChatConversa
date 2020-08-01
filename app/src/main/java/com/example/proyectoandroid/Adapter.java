@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +20,17 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
     static List<Data> mensajes;
+    private AdapterView.OnItemClickListener mListener;
     Context context;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+        void onDeleteClick(int position);
+    }
+
+    public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public static class MensajesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textViewNombre, textViewMensaje, textViewHoraMensaje;
@@ -28,7 +39,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
         Context context;
         List<Data> mensajes;
 
-        public MensajesViewHolder(@NonNull View itemView,Context context, List<Data> mensajes) {
+
+        public MensajesViewHolder(@NonNull View itemView,Context context, List<Data> mensajes, final OnItemClickListener listener) {
             super(itemView);
             textViewNombre =itemView.findViewById(R.id.nombre);
             textViewMensaje=itemView.findViewById(R.id.mensaje);
@@ -40,8 +52,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
             imageButtonFotoMensaje =itemView.findViewById(R.id.mensajeFoto);
             imageViewMensajeFoto=itemView.findViewById(R.id.expanded_message);
 
-//            imageButtonPerfilMensaje.setOnClickListener(this);
-//            itemView.setOnClickListener(this);
+            imageButtonPerfilMensaje.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
             this.context=context;
             this.mensajes =mensajes;
 
@@ -50,14 +72,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 
         @Override
         public void onClick(View v) {
-//            System.out.println(mensajes.get(getAdapterPosition()).toString());
-//            Intent intent=new Intent(context,MuestraImagenGrande.class);
-//            Bundle parametros = new Bundle();
-//            parametros.putString("user_image",mensajes.get(getAdapterPosition()).getUser().getUser_image());
-//            context.startActivity(intent);
-//            Toast.makeText(context, mensajes.get(getAdapterPosition()).getUser().getUser_image(), Toast.LENGTH_SHORT).show();
+            switch (v.getId()){
 
 
+            }
         }
 
      }
@@ -77,7 +95,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
     @Override
     public MensajesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_recycler,parent, false);
-        MensajesViewHolder holder =new MensajesViewHolder(v,context,mensajes);
+        MensajesViewHolder holder =new MensajesViewHolder(v,context,mensajes, (OnItemClickListener) mListener);
         return holder;
     }
 
@@ -125,7 +143,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 
         // Funciones on click
         holder.imageButtonPerfilMensaje.setOnClickListener(view -> {
-            Log.d("TAG", "Click imagenPerfil: " + mensajes.get(position));
+            Log.d("TAG", "Click imagenPerfil: " + mensaje.getUser().getUsername());
             if(holder.imageViewFotoPerfilMensaje.getVisibility()==View.VISIBLE){
                 holder.imageViewFotoPerfilMensaje.setVisibility(View.GONE);
             } else {
