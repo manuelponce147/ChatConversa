@@ -1,13 +1,18 @@
 package com.example.proyectoandroid;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -23,13 +28,25 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import com.iceteck.silicompressorr.FileUtils;
 import com.iceteck.silicompressorr.SiliCompressor;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.PusherEvent;
+import com.pusher.client.channel.SubscriptionEventListener;
+import com.pusher.client.connection.ConnectionEventListener;
+import com.pusher.client.connection.ConnectionState;
+import com.pusher.client.connection.ConnectionStateChange;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -56,6 +73,7 @@ public class MensajesActivity extends FragmentActivity {
     private EditText mensajeLayoutTxt;
     private ServicioWeb servicio;
     private static final int PHOTO_SEND = 1;
+    private static final String CHANNEL_ID= "PUSHER_MSG";
     RecyclerView rv;
     Adapter adapter;
     List<Data> mensajes;
@@ -77,8 +95,81 @@ public class MensajesActivity extends FragmentActivity {
         servicio = retrofit.create(ServicioWeb.class);
         //////////////
         //////////////
+        createChannel();
+        PusherOptions options = new PusherOptions();
+        options.setCluster("us2");
+        Pusher pusher = new Pusher("46e8ded9439a0fef8cbc",options);
+        pusher.connect(new ConnectionEventListener() {
+            @Override
+            public void onConnectionStateChange(ConnectionStateChange change) {
+                Log.d("PUSHER","Estado actual"+change.getCurrentState().name()+ " Estado" +
+                        " previo " + change.getPreviousState().name());
 
 
+            }
+
+            @Override
+            public void onError(String message, String code, Exception e) {
+                Log.d("PUSHER", "Error Pusher\n"
+                        + "Mensaje " + message + "\n"
+                        + "Codigo " + code + "\n"
+                        + "e " + e + "\n"
+                );
+            }
+        }, ConnectionState.ALL);
+        Channel channel = pusher.subscribe("my-channel");
+        channel.bind("my-event", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(PusherEvent event) {
+                Log.d("PUSHER", "Nuevo Mensaje " + event.toString());
+                JSONObject jsonObject = null;
+                NotificationCompat.Builder nBuilder =
+                        new NotificationCompat.Builder(MensajesActivity.this, CHANNEL_ID)
+                            .setSmallIcon(R.drawable.ic_chart_notification)
+                            .setContentTitle("Notifiacion")
+                            .setContentText("Mensaje")
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setAutoCancel(true);
+                RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
+                RequestBody idRb =RequestBody.create(MediaType.parse("multipart/form-data"), id+"");
+                Call<RespuestaWSLastM> call = servicio.mGet(idRb,usernameRb,tokenB1);
+                call.enqueue(new Callback<RespuestaWSLastM>() {
+                    @Override
+                    public void onResponse(Call<RespuestaWSLastM> call, Response<RespuestaWSLastM> response) {
+                        if(response.isSuccessful()){
+                            Data data = new Data();
+                            rv = findViewById(R.id.containerF2);
+                            rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            mensajes=response.body().getData();
+                            adapter=new Adapter(mensajes,getApplicationContext());
+                            adapter.addMensaje(data);
+                            rv.setAdapter(adapter);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RespuestaWSLastM> call, Throwable t) {
+
+                    }
+                });
+
+                try{
+                    jsonObject = new JSONObject(event.toString());
+                    nBuilder=new NotificationCompat.Builder(MensajesActivity.this, CHANNEL_ID)
+                            .setSmallIcon(R.drawable.ic_chart_notification)
+                            .setContentTitle("Nuevo mensaje de "+ jsonObject.getJSONObject("data").getJSONObject("message").getJSONObject("user").getString("username"))
+                            .setContentText(jsonObject.getJSONObject("data").getJSONObject("message").getString("message"))
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setAutoCancel(true);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                NotificationManagerCompat notificationManagerCompat =
+                        NotificationManagerCompat.from(MensajesActivity.this);
+                notificationManagerCompat.notify(66,nBuilder.build());
+            }
+        });
         //////////////
         //////////////
         RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
@@ -105,6 +196,15 @@ public class MensajesActivity extends FragmentActivity {
             }
         });
 
+    }
+    private void createChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel=new NotificationChannel(CHANNEL_ID, "PUSHER",
+                    NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+        }
     }
     public void back(View view){
         parametrosLogoutBack(token,id,username);
