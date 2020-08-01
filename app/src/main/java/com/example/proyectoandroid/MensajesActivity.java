@@ -102,11 +102,6 @@ public class MensajesActivity extends FragmentActivity {
 
 
 
-    private final static int REQUEST_PERMISSION = 1001;
-    private final static int REQUEST_CAMERA = 1002;
-    private final static String[] PERMISSION_REQUIRED =
-            new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE" };
-
     private String pathPhoto;
 
 
@@ -121,7 +116,6 @@ public class MensajesActivity extends FragmentActivity {
         String tokenB1 = "Bearer " + token;
         id= params.getInt("id");
         username= params.getString("username");
-        btnImagen = (ImageButton) findViewById(R.id.botonGaleria);
         Retrofit retrofit= new Retrofit.Builder()
                 .baseUrl("http://chat-conversa.unnamed-chile.com/ws/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -244,7 +238,6 @@ public class MensajesActivity extends FragmentActivity {
         parametrosLogoutBack(token,id,username);
     }
     public void enviarMensaje(View view){
-
         mensajeLayoutTxt= (EditText) findViewById(R.id.mensajeLayout);
         RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
         RequestBody idRb =RequestBody.create(MediaType.parse("multipart/form-data"), id+"");
@@ -253,14 +246,14 @@ public class MensajesActivity extends FragmentActivity {
         String tokenB = "Bearer " + token;
         //// Parte llamada foto
 
-            File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(),"temp")));
-            RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
-            MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
-            System.out.println(pathPhoto);
+        //File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(),"temp")));
+        //RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
+        //MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
+        //System.out.println(pathPhoto);
 
 
         ///
-        Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,file,
+        Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,null,
                 null,null,tokenB);
         call.enqueue(new Callback<RespuestaWS>() {
             @Override
@@ -273,7 +266,7 @@ public class MensajesActivity extends FragmentActivity {
                         public void onResponse(Call<RespuestaWSLastM> call, Response<RespuestaWSLastM> response) {
                             if(response.isSuccessful()){
                                 Data data = new Data();
-            //                  mensajes.removeAll(mensajes);
+                                //                  mensajes.removeAll(mensajes);
                                 rv = findViewById(R.id.containerF2);
                                 rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                                 mensajes=response.body().getData();
@@ -314,6 +307,7 @@ public class MensajesActivity extends FragmentActivity {
 
     }
     public void capturarFoto(View view){
+
 }
 
 
@@ -404,18 +398,6 @@ public class MensajesActivity extends FragmentActivity {
         contenedorFoto.setImageBitmap(bitmap);
     }
 
-    private File createFilePhoto() throws IOException {
-        String timestamp =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String file_name = "JPEG_" + timestamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File photo = File.createTempFile(
-                file_name,
-                ".jpg",
-                storageDir
-        );
-        pathPhoto = photo.getAbsolutePath();
-        return photo;
-    }
 
 
     @Override
@@ -456,7 +438,7 @@ public class MensajesActivity extends FragmentActivity {
         );
         return photo;
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -538,4 +520,6 @@ public class MensajesActivity extends FragmentActivity {
             });
         }
     }
+
+ */
 }
