@@ -1,5 +1,10 @@
 package com.example.proyectoandroid;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -10,28 +15,43 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.iceteck.silicompressorr.SiliCompressor;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.iceteck.silicompressorr.FileUtils;
 import com.iceteck.silicompressorr.SiliCompressor;
@@ -72,11 +92,25 @@ public class MensajesActivity extends FragmentActivity {
     private String username;
     private EditText mensajeLayoutTxt;
     private ServicioWeb servicio;
+    private ImageButton tomarFoto;
     private static final int PHOTO_SEND = 1;
     private static final String CHANNEL_ID= "PUSHER_MSG";
     RecyclerView rv;
-    Adapter adapter;
+    private Adapter adapter;
     List<Data> mensajes;
+    private ImageView contenedorFoto;
+
+
+
+    private final static int REQUEST_PERMISSION = 1001;
+    private final static int REQUEST_CAMERA = 1002;
+    private final static String[] PERMISSION_REQUIRED =
+            new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE" };
+
+    private String pathPhoto;
+
+
+
     private ImageButton btnImagen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,13 +244,23 @@ public class MensajesActivity extends FragmentActivity {
         parametrosLogoutBack(token,id,username);
     }
     public void enviarMensaje(View view){
+
         mensajeLayoutTxt= (EditText) findViewById(R.id.mensajeLayout);
         RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
         RequestBody idRb =RequestBody.create(MediaType.parse("multipart/form-data"), id+"");
         RequestBody msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
                 mensajeLayoutTxt.getText().toString());
         String tokenB = "Bearer " + token;
-        Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,null,
+        //// Parte llamada foto
+
+            File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(),"temp")));
+            RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
+            MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
+            System.out.println(pathPhoto);
+
+
+        ///
+        Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,file,
                 null,null,tokenB);
         call.enqueue(new Callback<RespuestaWS>() {
             @Override
@@ -269,12 +313,126 @@ public class MensajesActivity extends FragmentActivity {
         });
 
     }
-    public void enviarFoto(View view){
-        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-        i.setType("image/jpeg");
-        i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-        startActivityForResult(Intent.createChooser(i,"Seleciona una foto"),PHOTO_SEND);
+    public void capturarFoto(View view){
+}
+
+
+
+////////////////////// Metodos capturar foto
+
+
+    private boolean verifyPermission(){
+        for(String permission : PERMISSION_REQUIRED){
+            if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED){
+                return false;
+            }
+        }
+        return true;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_PERMISSION){
+            if(verifyPermission()){
+                startCameraInit();
+            }else{
+                Toast.makeText(this, "Los permisos deben ser autorizados", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void startCameraInit(){
+        tomarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCamera();
+            }
+        });
+    }
+
+    private void startCamera(){
+        if(false){
+            Intent iniciarCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(iniciarCamara.resolveActivity(getPackageManager()) != null){
+                startActivityForResult(iniciarCamara, REQUEST_CAMERA);
+            }
+        }else{
+            Intent iniciarCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(iniciarCamara.resolveActivity(getPackageManager()) != null){
+                File photoFile = null;
+//                File photoFileCompressed = null;
+                try{
+                    photoFile = createFilePhoto();
+//                    photoFileCompressed=createFilePhotoTemp();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if(photoFile != null){
+                    Uri photoUri = FileProvider.getUriForFile(this,
+                            "com.example.proyectoandroid.fileprovider",
+                            photoFile);
+//                    Uri photoUriCompressed = FileProvider.getUriForFile(this,
+//                            "com.example.proyectoandroid.fileprovider",
+//                            photoFileCompressed);
+                    iniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//                    iniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, photoUriCompressed);
+                    startActivityForResult(iniciarCamara, REQUEST_CAMERA);
+                }
+            }
+        }
+    }
+
+
+
+    private void showPhoto(){
+        int targetW = 200;
+        int targetH = 200;
+
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        int scale = (int) targetW/targetH;
+
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scale;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(pathPhoto, bmOptions);
+        contenedorFoto.setImageBitmap(bitmap);
+    }
+
+    private File createFilePhoto() throws IOException {
+        String timestamp =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String file_name = "JPEG_" + timestamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File photo = File.createTempFile(
+                file_name,
+                ".jpg",
+                storageDir
+        );
+        pathPhoto = photo.getAbsolutePath();
+        return photo;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CAMERA && resultCode == RESULT_OK){
+            if(false){
+                Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+                contenedorFoto.setImageBitmap(imageBitmap);
+            }else{
+                showPhoto();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 
     public void parametrosLogoutBack(String token, int id, String username){
         Intent intent = new Intent(this, LogoutActivity.class);
