@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 
     public static class MensajesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textViewNombre, textViewMensaje, textViewHoraMensaje;
-        ImageView imageViewFotoPerfilMensaje, imageViewMensajeFoto;
-        ImageButton imageButtonPerfilMensaje, imageButtonMensaje;
+        ImageView imageViewFotoPerfilMensaje, imageViewMensajeFoto,imageButtonPerfilMensaje, imageButtonFotoMensaje;
+//        ImageButton ;
         Context context;
         List<Data> mensajes;
 
@@ -36,11 +37,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
             imageButtonPerfilMensaje =itemView.findViewById(R.id.thumb_image);
             imageViewFotoPerfilMensaje=itemView.findViewById(R.id.expanded_image);
 
-            imageButtonMensaje =itemView.findViewById(R.id.mensajeFoto);
+            imageButtonFotoMensaje =itemView.findViewById(R.id.mensajeFoto);
             imageViewMensajeFoto=itemView.findViewById(R.id.expanded_message);
 
-            imageButtonPerfilMensaje.setOnClickListener(this);
-            itemView.setOnClickListener(this);
+//            imageButtonPerfilMensaje.setOnClickListener(this);
+//            itemView.setOnClickListener(this);
             this.context=context;
             this.mensajes =mensajes;
 
@@ -86,25 +87,43 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
         holder.textViewNombre.setText(mensaje.getUser().getUsername());
         holder.textViewMensaje.setText(mensaje.getMessage());
         holder.textViewHoraMensaje.setText(mensaje.getDate());
-        if (mensaje.getThumbnail()!=null){
-            Glide.with(context)
-                    .load(mensaje.getThumbnail())
-                    .into(holder.imageButtonPerfilMensaje);
-            Glide.with(context)
-                    .load(mensaje.getImage())
-                    .into(holder.imageViewMensajeFoto);
-        }
-        if (mensaje.getUser().getUser_image()!=null||!mensaje.getUser().getUser_image().equals("")){
+
+
+        if (!mensaje.getUser().getUser_image().equals("")){
+            System.out.println("Path de la foto de "+mensaje.getUser().getUsername()+" " +mensaje.getUser().getUser_image());
             Glide.with(context)
                     .load(mensaje.getUser().getUser_thumbnail())
                     .into(holder.imageButtonPerfilMensaje);
             Glide.with(context)
+
                     .load(mensaje.getUser().getUser_image())
                     .into(holder.imageViewFotoPerfilMensaje);
-        };
+        } else {
+//            holder.imageButtonPerfilMensaje.setVisibility(View.INVISIBLE);
+//            holder.imageViewFotoPerfilMensaje.setVisibility(View.INVISIBLE);
+        }
+
+        //Llenado mensaje, thumb y full
+        if (mensaje.getThumbnail()!=null){
+            holder.imageButtonFotoMensaje.setVisibility(View.VISIBLE);
+
+            Glide.with(context)
+                    .load(mensaje.getThumbnail())
+                    .apply(new RequestOptions().override(500, 500))
+                    .into(holder.imageButtonFotoMensaje);
+            Glide.with(context)
+                    .load(mensaje.getImage())
+                    .into(holder.imageViewMensajeFoto);
+        }else {
+
+//            holder.imageButtonFotoMensaje.setVisibility(View.GONE);
+//            holder.imageViewMensajeFoto.setVisibility(View.GONE);
+        }
+        ;
 
 
 
+        // Funciones on click
         holder.imageButtonPerfilMensaje.setOnClickListener(view -> {
             Log.d("TAG", "Click imagenPerfil: " + mensajes.get(position));
             if(holder.imageViewFotoPerfilMensaje.getVisibility()==View.VISIBLE){
@@ -116,7 +135,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 
         });
 
-        holder.imageButtonMensaje.setOnClickListener(view -> {
+        holder.imageButtonFotoMensaje.setOnClickListener(view -> {
             Log.d("TAG", "Click imagenMensaje: " + mensajes.get(position));
             if(holder.imageViewMensajeFoto.getVisibility()==View.VISIBLE){
                 holder.imageViewMensajeFoto.setVisibility(View.GONE);

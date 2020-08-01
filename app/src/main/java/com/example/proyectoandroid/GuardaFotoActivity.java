@@ -111,11 +111,6 @@ public class GuardaFotoActivity extends AppCompatActivity {
 
     }
 
-    // This method  converts String to RequestBody
-    public static RequestBody toRequestBody (String value) {
-        RequestBody body = RequestBody.create(MediaType.parse("text/plain"), value);
-        return body ;
-    }
     private void subirImagen(){
         File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(),"temp")));
         RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
@@ -232,19 +227,7 @@ public class GuardaFotoActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == REQUEST_CAMERA && resultCode == RESULT_OK){
-            if(false){
-                Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-                contenedorFoto.setImageBitmap(imageBitmap);
-            }else{
-                showPhoto();
-            }
-        }
 
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     private void showPhoto(){
         int targetW = contenedorFoto.getWidth();
@@ -276,6 +259,20 @@ public class GuardaFotoActivity extends AppCompatActivity {
         return photo;
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CAMERA && resultCode == RESULT_OK){
+            if(false){
+                Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+                contenedorFoto.setImageBitmap(imageBitmap);
+            }else{
+                showPhoto();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 //    private File createFilePhotoTemp() throws IOException {
 //        String timestamp =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 //        String file_name = "JPEG_" + timestamp + "_";

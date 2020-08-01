@@ -38,6 +38,18 @@ public class MensajesActivity extends FragmentActivity {
     RecyclerView rv;
     private Adapter adapter;
     List<Data> mensajes;
+
+
+
+    private final static int REQUEST_PERMISSION = 1001;
+    private final static int REQUEST_CAMERA = 1002;
+    private final static String[] PERMISSION_REQUIRED =
+            new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE" };
+
+    private String pathPhoto;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
