@@ -252,17 +252,29 @@ public class MensajesActivity extends FragmentActivity {
                 mensajeLayoutTxt.getText().toString());
         String tokenB = "Bearer " + token;
         //// Parte llamada foto
-
-        File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(),"temp")));
-        RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
-        MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
-        System.out.println(pathPhoto);
+        Call<RespuestaWS> call;
+        if(pathPhoto!=null) {
 
 
-        ///
-        Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,file,
-                null,null,tokenB);
+            File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(), "temp")));
+            RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
+            MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
+            System.out.println(pathPhoto);
+
+
+            ///
+            call = servicio.mSend(idRb, usernameRb, msnRb, file,
+                    null, null, tokenB);
+
+
+        }else{
+           call = servicio.mSend(idRb,usernameRb,msnRb,null,
+                    null,null,tokenB);
+
+        }
         call.enqueue(new Callback<RespuestaWS>() {
+
+
             @Override
             public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
                 Log.d("Retrofit",response.toString());
@@ -280,6 +292,8 @@ public class MensajesActivity extends FragmentActivity {
                                 adapter=new Adapter(mensajes,getApplicationContext());
                                 rv.setAdapter(adapter);
                                 mensajeLayoutTxt.setText("");
+                                ImageView activate = (ImageView) findViewById(R.id.contenedorImagen);
+                                activate.setVisibility(View.INVISIBLE);
 
 
 
@@ -403,6 +417,8 @@ public class MensajesActivity extends FragmentActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(pathPhoto, bmOptions);
         contenedorFoto.setImageBitmap(bitmap);
+        ImageView activate = (ImageView) findViewById(R.id.contenedorImagen);
+        activate.setVisibility(View.VISIBLE);
     }
 
 
@@ -443,6 +459,7 @@ public class MensajesActivity extends FragmentActivity {
                 ".jpg",
                 storageDir
         );
+        pathPhoto = photo.getAbsolutePath();
         return photo;
     }
 /*

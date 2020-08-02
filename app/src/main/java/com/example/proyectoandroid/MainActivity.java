@@ -59,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(registro);
         finish();
     }
+    public void integrantes(View view) {
+        Intent intent = new Intent(this, IntegrantesActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
 
 
@@ -140,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     private boolean validatePassword() {
         String usernameInput = pass.getText().toString().trim();
         if (usernameInput.isEmpty()) {
@@ -160,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
         finish();
     }
+
 
     public void guardaFoto(View view){
 

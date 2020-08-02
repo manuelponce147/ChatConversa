@@ -76,11 +76,11 @@
         android:text="Registrarse" />
 
     <Button
-        android:id="@+id/buttonMensajes"
+        android:id="@+id/intregrantes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="guardaFoto"
-        android:text="MENSAJES" />
+        android:onClick="integrantes"
+        android:text="Integrantes" />
 
 
 </LinearLayout>
