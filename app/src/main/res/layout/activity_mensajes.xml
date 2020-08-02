@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:background="@android:drawable/ic_menu_camera"
                 android:nextFocusRight="@id/mensajeLayout"
-                android:onClick="capturarFoto"/>
+                android:onClick="capturarFoto" />
             <EditText
                 android:id="@+id/mensajeLayout"
                 android:layout_width="wrap_content"

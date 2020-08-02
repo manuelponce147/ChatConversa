@@ -122,6 +122,13 @@ public class MensajesActivity extends FragmentActivity {
                 .build();
         servicio = retrofit.create(ServicioWeb.class);
         //////////////
+        tomarFoto = findViewById(R.id.tomarFoto);
+        contenedorFoto=findViewById(R.id.contenedorImagen);
+        if(verifyPermission()){
+            startCameraInit();
+        }else{
+            ActivityCompat.requestPermissions(this, PERMISSION_REQUIRED, REQUEST_PERMISSION);
+        }
         //////////////
         createChannel();
         PusherOptions options = new PusherOptions();
@@ -246,14 +253,14 @@ public class MensajesActivity extends FragmentActivity {
         String tokenB = "Bearer " + token;
         //// Parte llamada foto
 
-        //File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(),"temp")));
-        //RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
-        //MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
-        //System.out.println(pathPhoto);
+        File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(),"temp")));
+        RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
+        MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
+        System.out.println(pathPhoto);
 
 
         ///
-        Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,null,
+        Call<RespuestaWS> call = servicio.mSend(idRb,usernameRb,msnRb,file,
                 null,null,tokenB);
         call.enqueue(new Callback<RespuestaWS>() {
             @Override
