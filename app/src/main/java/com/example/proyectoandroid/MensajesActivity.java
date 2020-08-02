@@ -297,6 +297,7 @@ public class MensajesActivity extends FragmentActivity {
                                 adapter=new Adapter(mensajes,getApplicationContext());
                                 rv.setAdapter(adapter);
                                 mensajeLayoutTxt.setText("");
+                                pathPhoto = null;
                                 ImageView activate = (ImageView) findViewById(R.id.contenedorImagen);
                                 activate.setVisibility(View.INVISIBLE);
                                 linearLayout.setVisibility(View.GONE);
