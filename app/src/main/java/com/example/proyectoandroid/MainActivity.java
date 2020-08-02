@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void guardaFoto(View view){
 
-        parametrosGuardaFoto("6I9wCEr80vAbUahbpgRsQSiHjMUB4QsvxSR5qoRo5H4385iei5F9oNrNLkHCoqYjayPJMgIR7lPA8bEM",378,"testo63");
+        parametrosGuardaFoto("iuOdEWr5fEATBdx1e2HRVXwLr3X4EGrFhqYRn1GmNiVavOAPEF5daQmiXAbUz7sY56qOJzINqg03ZPUo",441,"testo90");
 
     }
 

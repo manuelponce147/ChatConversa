@@ -76,6 +76,13 @@
         android:text="Registrarse" />
 
     <Button
+        android:id="@+id/Mensajes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="guardaFoto"
+        android:text="Mensajes" />
+
+    <Button
         android:id="@+id/intregrantes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

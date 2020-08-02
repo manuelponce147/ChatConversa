@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -95,6 +96,7 @@ public class MensajesActivity extends FragmentActivity {
     private ImageButton tomarFoto;
     private static final int PHOTO_SEND = 1;
     private static final String CHANNEL_ID= "PUSHER_MSG";
+    private LinearLayout linearLayout;
     RecyclerView rv;
     private Adapter adapter;
     List<Data> mensajes;
@@ -123,9 +125,11 @@ public class MensajesActivity extends FragmentActivity {
         servicio = retrofit.create(ServicioWeb.class);
         //////////////
         tomarFoto = findViewById(R.id.tomarFoto);
+        linearLayout=findViewById(R.id.layoutPreview);
         contenedorFoto=findViewById(R.id.contenedorImagen);
         if(verifyPermission()){
             startCameraInit();
+
         }else{
             ActivityCompat.requestPermissions(this, PERMISSION_REQUIRED, REQUEST_PERMISSION);
         }
@@ -255,8 +259,9 @@ public class MensajesActivity extends FragmentActivity {
         Call<RespuestaWS> call;
         if(pathPhoto!=null) {
 
-
+            linearLayout.setVisibility(View.VISIBLE);
             File archivoImagen = new File(SiliCompressor.with(getApplicationContext()).compress(pathPhoto, new File(this.getCacheDir(), "temp")));
+            //File archivoImagen = new File(pathPhoto);
             RequestBody imagen = RequestBody.create(MediaType.parse("multipart/form-data"), archivoImagen);
             MultipartBody.Part file = MultipartBody.Part.createFormData("image", archivoImagen.getName(), imagen);
             System.out.println(pathPhoto);
@@ -294,6 +299,7 @@ public class MensajesActivity extends FragmentActivity {
                                 mensajeLayoutTxt.setText("");
                                 ImageView activate = (ImageView) findViewById(R.id.contenedorImagen);
                                 activate.setVisibility(View.INVISIBLE);
+                                linearLayout.setVisibility(View.GONE);
 
 
 
@@ -429,8 +435,10 @@ public class MensajesActivity extends FragmentActivity {
             if(false){
                 Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
                 contenedorFoto.setImageBitmap(imageBitmap);
+                linearLayout.setVisibility(View.VISIBLE);
             }else{
                 showPhoto();
+                linearLayout.setVisibility(View.VISIBLE);
             }
         }
 
