@@ -75,12 +75,14 @@
         android:onClick="register"
         android:text="Registrarse" />
 
+
+
     <Button
-        android:id="@+id/buttonFoto"
+        android:id="@+id/intregrantes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="guardaFoto"
-        android:text="Foto" />
+        android:onClick="integrantes"
+        android:text="Integrantes" />
 
 
 </LinearLayout>

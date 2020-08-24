@@ -23,6 +23,7 @@ public class LogoutActivity extends AppCompatActivity {
     private int id;
     private String username;
     int flag=0;
+    private String pathPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class LogoutActivity extends AppCompatActivity {
         token= params.getString("token");
         id= params.getInt("id");
         username= params.getString("username");
+        pathPhoto= params.getString("imagen");
     }
     public void onClick(View view){
         Logout logout = new Logout(id,username);
@@ -85,7 +87,7 @@ public class LogoutActivity extends AppCompatActivity {
     }
 
     public void verMensajes(View view){
-        parametrosMensaje(token,id,username);
+        parametrosMensaje(token,id,username,pathPhoto);
     }
     public void parametrosConfiguracion(String token, int id, String username){
         Intent intent = new Intent(this, ConfiguracionActivity.class);
@@ -97,12 +99,13 @@ public class LogoutActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-    public void parametrosMensaje(String token, int id, String username){
+    public void parametrosMensaje(String token, int id, String username, String imagen){
         Intent intent = new Intent(this, MensajesActivity.class);
         Bundle parametros = new Bundle();
         parametros.putString("username",username);
         parametros.putInt("id",id);
         parametros.putString("token",token);
+        parametros.putString("imagen",pathPhoto);
         intent.putExtras(parametros);
         startActivity(intent);
         finish();

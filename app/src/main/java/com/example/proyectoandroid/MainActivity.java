@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         user= findViewById(R.id.editText);
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button = findViewById(R.id.button);
 
         device_id = Secure.getString(getContentResolver(),Secure.ANDROID_ID);
-        //System.out.println("este es el device id "+device_id);
+        System.out.println("este es el device id "+device_id);
         button.setOnClickListener(this);
         Retrofit retrofit= new Retrofit.Builder()
                 .baseUrl("http://chat-conversa.unnamed-chile.com/ws/")
@@ -56,6 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void register(View view){
         Intent registro = new Intent(this, RegisterActivity.class);
         startActivity(registro);
+        finish();
+    }
+    public void integrantes(View view) {
+        Intent intent = new Intent(this, IntegrantesActivity.class);
+        startActivity(intent);
         finish();
     }
 
@@ -73,6 +79,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
                     if (response.isSuccessful() && response != null && response.body() != null) {
+
+                        ((Constantes) getApplication()).setId(response.body().getData().getId()+"");
+                        ((Constantes) getApplication()).setName(response.body().getData().getName());
+                        ((Constantes) getApplication()).setLastname(response.body().getData().getLastname());
+                        ((Constantes) getApplication()).setUsername(response.body().getData().getUsername());
+                        ((Constantes) getApplication()).setRun(response.body().getData().getRun());
+                        ((Constantes) getApplication()).setEmail(response.body().getData().getEmail());
+                        //agrega imagen si esta presente
+                        if(!response.body().getData().getImage().equals(""))
+                        ((Constantes) getApplication()).setImage(response.body().getData().getImage());
+                        //agrega miniatura si esta presente
+                        if(!response.body().getData().getThumbnail().equals(""))
+                        ((Constantes) getApplication()).setThumbnail(response.body().getData().getThumbnail());
                         Log.d("Retrofit", response.body().getStatus_code());
                         Log.d("Retrofit", response.body().getData().getId() + "");
                         Log.d("Retrofit", response.body().getToken());
@@ -104,8 +123,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
-                        //Log.d("Retrofit","Error body convert: "+ response.body().toString());
                     }
                 }
 
@@ -128,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     private boolean validatePassword() {
         String usernameInput = pass.getText().toString().trim();
         if (usernameInput.isEmpty()) {
@@ -149,18 +167,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         finish();
     }
 
+
     public void guardaFoto(View view){
 
-        parametrosGuardaFoto("SARU12",123,"username");
+        parametrosGuardaFoto("iuOdEWr5fEATBdx1e2HRVXwLr3X4EGrFhqYRn1GmNiVavOAPEF5daQmiXAbUz7sY56qOJzINqg03ZPUo",441,"testo90");
 
     }
 
 
     public void parametrosGuardaFoto(String token, int id, String username){
-        Intent intent = new Intent(this, GuardaFotoActivity.class);
+        Intent intent = new Intent(this, MensajesActivity.class);
         Bundle parametros = new Bundle();
-        parametros.putString("username","testo22");
-        parametros.putInt("id",155);
+        parametros.putString("username",username);
+        parametros.putInt("user_id",id);
         parametros.putString("token",token);
         intent.putExtras(parametros);
         startActivity(intent);

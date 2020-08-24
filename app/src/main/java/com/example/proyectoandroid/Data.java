@@ -5,24 +5,31 @@ import java.util.Objects;
 public class Data {
     private int id;
     private String name;
+    private String date;
+    private String message;
     private String lastname;
     private String username;
     private String run;
     private String email;
     private String image;
     private String thumbnail;
+    private User user;
 
-
-
-    public Data(int id, String name, String lastname, String username, String run, String email, String image, String thumbnail) {
-        this.id = id;
-        this.name = name;
-        this.lastname = lastname;
-        this.username = username;
-        this.run = run;
-        this.email = email;
-        this.image = image;
-        this.thumbnail = thumbnail;
+    @Override
+    public String toString() {
+        return "Data{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                ", message='" + message + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", username='" + username + '\'' +
+                ", run='" + run + '\'' +
+                ", email='" + email + '\'' +
+                ", image='" + image + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", user=" + user +
+                '}';
     }
 
     @Override
@@ -32,31 +39,20 @@ public class Data {
         Data data = (Data) o;
         return id == data.id &&
                 Objects.equals(name, data.name) &&
+                Objects.equals(date, data.date) &&
+                Objects.equals(message, data.message) &&
                 Objects.equals(lastname, data.lastname) &&
                 Objects.equals(username, data.username) &&
                 Objects.equals(run, data.run) &&
                 Objects.equals(email, data.email) &&
                 Objects.equals(image, data.image) &&
-                Objects.equals(thumbnail, data.thumbnail);
+                Objects.equals(thumbnail, data.thumbnail) &&
+                Objects.equals(user, data.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastname, username, run, email, image, thumbnail);
-    }
-
-    @Override
-    public String toString() {
-        return "Data{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", username='" + username + '\'' +
-                ", run='" + run + '\'' +
-                ", email='" + email + '\'' +
-                ", image='" + image + '\'' +
-                ", thumbnail='" + thumbnail + '\'' +
-                '}';
+        return Objects.hash(id, name, date, message, lastname, username, run, email, image, thumbnail, user);
     }
 
     public int getId() {
@@ -73,6 +69,22 @@ public class Data {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getLastname() {
@@ -121,5 +133,30 @@ public class Data {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Data() {
+    }
+
+    public Data(int id, String name, String date, String message, String lastname, String username, String run, String email, String image, String thumbnail, User user) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.message = message;
+        this.lastname = lastname;
+        this.username = username;
+        this.run = run;
+        this.email = email;
+        this.image = image;
+        this.thumbnail = thumbnail;
+        this.user = user;
     }
 }

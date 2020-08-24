@@ -52,7 +52,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void onClick(View view){
 
-
         name = findViewById(R.id.nameLabel);
         lastname = findViewById(R.id.lastnameLabel);
         run = findViewById(R.id.runLabel);
@@ -60,12 +59,14 @@ public class RegisterActivity extends AppCompatActivity {
         email = findViewById(R.id.emailLabel);
         password = findViewById(R.id.passwordLabel);
         token=findViewById(R.id.tokenLabel);
-
-        User usuario = new User(name.getEditText().getText().toString(),
+        User usuario=new User("",
+                "" ,
+                "" ,
+                name.getEditText().getText().toString(),
                 lastname.getEditText().getText().toString(),
                 run.getEditText().getText().toString(),
-                username.getEditText().getText().toString(),
-                email.getEditText().getText().toString(),
+                username.getEditText().getText().toString()
+                , email.getEditText().getText().toString(),
                 password.getEditText().getText().toString(),
                 token.getEditText().getText().toString());
 
@@ -73,12 +74,20 @@ public class RegisterActivity extends AppCompatActivity {
        if (!validateName() |!validateLastName() |!validateRun() | !validateUsername() |!validateEmail() | !validatePassword()) {
 
         } else {
-           Call<RespuestaWSRegister> call = servicio.create(usuario);
-           call.enqueue(new Callback<RespuestaWSRegister>() {
+           Call<RespuestaWS> call = servicio.create(usuario);
+           call.enqueue(new Callback<RespuestaWS>() {
                @Override
-               public void onResponse(Call<RespuestaWSRegister> call, Response<RespuestaWSRegister> response) {
+               public void onResponse(Call<RespuestaWS> call, Response<RespuestaWS> response) {
 
                    if(response.isSuccessful() && response!= null && response.body() != null){
+                       ((Constantes) getApplication()).setId(""+response.body().getData().getId());
+                       ((Constantes) getApplication()).setName(name.getEditText().getText().toString());
+                       ((Constantes) getApplication()).setLastname(lastname.getEditText().getText().toString());
+                       ((Constantes) getApplication()).setUsername(username.getEditText().getText().toString());
+                       ((Constantes) getApplication()).setRun(run.getEditText().getText().toString());
+                       ((Constantes) getApplication()).setEmail(email.getEditText().getText().toString());
+                       ((Constantes) getApplication()).setToken(token.getEditText().getText().toString());
+
                        flag2=1;
                        Log.d("Retrofit","Exito: "+ response.body().toString());
                        Toast toast =
@@ -127,7 +136,7 @@ public class RegisterActivity extends AppCompatActivity {
                }
 
                @Override
-               public void onFailure(Call<RespuestaWSRegister> call, Throwable t) {
+               public void onFailure(Call<RespuestaWS> call, Throwable t) {
 
                }
            });
