@@ -65,11 +65,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
             imageButtonFotoMensaje =itemView.findViewById(R.id.mensajeFoto);
             imageViewMensajeFoto=itemView.findViewById(R.id.expanded_message);
             ////location
-            textViewLatitude=itemView.findViewById(R.id.latitude);
-            textViewLongitude=itemView.findViewById(R.id.longitude);
+
             buttonLocation=itemView.findViewById(R.id.botonVerLocalizacion);
-            showLatitude=itemView.findViewById(R.id.showLatitude);
-            showLongitude=itemView.findViewById(R.id.showLong);
+
             /////////
 
             imageButtonPerfilMensaje.setOnClickListener(this);
@@ -129,13 +127,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
         holder.textViewHoraMensaje.setText(mensaje.getDate());
         if(mensaje.getLongitude()==0 && mensaje.getLatitude()==0){
             holder.buttonLocation.setVisibility(View.GONE);
-            holder.textViewLatitude.setVisibility(View.GONE);
-            holder.textViewLongitude.setVisibility(View.GONE);
-            holder.showLongitude.setVisibility(View.GONE);
-            holder.showLatitude.setVisibility(View.GONE);
+
         }
-        holder.textViewLatitude.setText(mensaje.getLatitude()+"");
-        holder.textViewLongitude.setText(mensaje.getLongitude()+"");
+
 
 
         if (!mensaje.getUser().getUser_image().equals("")){
@@ -190,14 +184,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 //            parametros.putDouble("latitudeIn",mensaje.getLatitude());
 //            parametros.putDouble("longitudeIn",mensaje.getLongitude());
 //            view.getContext().startActivity(intent);
-            String uri = String.format(Locale.ENGLISH, "geo:%f,%f", mensaje.getLatitude(), mensaje.getLongitude());
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+//            String uri = String.format(Locale.ENGLISH, "geo:%f,%f", mensaje.getLatitude(), mensaje.getLongitude());
+//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:<"+mensaje.getLatitude()+">,<"+mensaje.getLongitude()+">?q=<"+mensaje.getLatitude()+">,<"+mensaje.getLongitude()+">( Ubicacion de )"));
+//            String urlAddress = "http://maps.google.com/maps?q="+ mensaje.getLatitude()  +"," + mensaje.getLongitude() +"( Mi casa )&iwloc=A&hl=es";
+//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlAddress));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:<" + mensaje.getLatitude()  + ">,<" + mensaje.getLongitude() + ">?q=<" + mensaje.getLatitude()  + ">,<" + mensaje.getLongitude() + ">(" + mensaje.getUser().getUsername() + ")"));
             intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
-            Toast.makeText(context, "Lat, Long: " + mensaje.getLatitude() +" "+mensaje.getLongitude(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Lat, Long: " + mensaje.getLatitude() +" "+mensaje.getLongitude(), Toast.LENGTH_SHORT).show();
 ////        intent.putExtras(parametros);
 //
-            Log.d("TAG MAPA", "Lat, Long: " + mensaje.getLatitude() +" "+mensaje.getLongitude());
+//            Log.d("TAG MAPA", "Lat, Long: " + mensaje.getLatitude() +" "+mensaje.getLongitude());
 //
 //
         });
