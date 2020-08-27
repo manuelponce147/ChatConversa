@@ -11,48 +11,29 @@ public class Data {
     private String username;
     private String run;
     private String email;
+    private double latitude;
+    private double longitude;
     private String image;
     private String thumbnail;
     private User user;
 
-    @Override
-    public String toString() {
-        return "Data{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", date='" + date + '\'' +
-                ", message='" + message + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", username='" + username + '\'' +
-                ", run='" + run + '\'' +
-                ", email='" + email + '\'' +
-                ", image='" + image + '\'' +
-                ", thumbnail='" + thumbnail + '\'' +
-                ", user=" + user +
-                '}';
+    public Data() {
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Data data = (Data) o;
-        return id == data.id &&
-                Objects.equals(name, data.name) &&
-                Objects.equals(date, data.date) &&
-                Objects.equals(message, data.message) &&
-                Objects.equals(lastname, data.lastname) &&
-                Objects.equals(username, data.username) &&
-                Objects.equals(run, data.run) &&
-                Objects.equals(email, data.email) &&
-                Objects.equals(image, data.image) &&
-                Objects.equals(thumbnail, data.thumbnail) &&
-                Objects.equals(user, data.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, date, message, lastname, username, run, email, image, thumbnail, user);
+    public Data(int id, String name, String date, String message, String lastname, String username, String run, String email, double latitude, double longitude, String image, String thumbnail, User user) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.message = message;
+        this.lastname = lastname;
+        this.username = username;
+        this.run = run;
+        this.email = email;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.image = image;
+        this.thumbnail = thumbnail;
+        this.user = user;
     }
 
     public int getId() {
@@ -119,6 +100,22 @@ public class Data {
         this.email = email;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     public String getImage() {
         return image;
     }
@@ -143,20 +140,22 @@ public class Data {
         this.user = user;
     }
 
-    public Data() {
-    }
-
-    public Data(int id, String name, String date, String message, String lastname, String username, String run, String email, String image, String thumbnail, User user) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.message = message;
-        this.lastname = lastname;
-        this.username = username;
-        this.run = run;
-        this.email = email;
-        this.image = image;
-        this.thumbnail = thumbnail;
-        this.user = user;
+    @Override
+    public String toString() {
+        return "Data{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                ", message='" + message + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", username='" + username + '\'' +
+                ", run='" + run + '\'' +
+                ", email='" + email + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", image='" + image + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

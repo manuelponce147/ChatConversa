@@ -29,6 +29,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageButton;
@@ -103,11 +104,11 @@ public class MensajesActivity extends FragmentActivity {
     private Adapter adapter;
     List<Data> mensajes;
     private ImageView contenedorFoto;
-
+    private LinearLayout layoutLoca ;
 
 
     private String pathPhoto;
-
+    private int contador;
 
 
     private ImageButton btnImagen;
@@ -129,6 +130,7 @@ public class MensajesActivity extends FragmentActivity {
                 .build();
         servicio = retrofit.create(ServicioWeb.class);
         //////////////
+        layoutLoca =  findViewById(R.id.layoutLoca);
         tomarFoto = findViewById(R.id.tomarFoto);
         linearLayout=findViewById(R.id.layoutPreview);
         contenedorFoto=findViewById(R.id.contenedorImagen);
@@ -182,6 +184,8 @@ public class MensajesActivity extends FragmentActivity {
                     public void onResponse(Call<RespuestaWSLastM> call, Response<RespuestaWSLastM> response) {
                         if(response.isSuccessful()){
                             Data data = new Data();
+                            contador++;
+
                             rv = findViewById(R.id.containerF2);
                             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                             mensajes=response.body().getData();
@@ -372,6 +376,9 @@ public class MensajesActivity extends FragmentActivity {
         intent.putExtras(parametros);
         startActivity(intent);
         finish();
+    }
+    public void verLoca(){
+
     }
 
 

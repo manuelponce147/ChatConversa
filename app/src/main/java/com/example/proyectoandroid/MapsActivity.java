@@ -28,7 +28,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnMapLongClickListener {
 
     private GoogleMap mMap;
     private static final int LOCATION_CODE_REQUEST = 666;
@@ -38,7 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationProvider;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
-
+    private int contador;
     private String token;
     private int id;
     private String username;
@@ -50,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        contador = 0;
         Bundle params = getIntent().getExtras();
         token= params.getString("token");
         id= params.getInt("id");
@@ -107,6 +109,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
         // Add a marker in Sydney and move the camera
         //LatLng sydney = new LatLng(-34, 151);
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -156,5 +160,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         intent.putExtras(parametros);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        contador++;
+        mMap.addMarker(new MarkerOptions().position(latLng).title("Marker in selected position " + contador ));
     }
 }
