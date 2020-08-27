@@ -57,9 +57,16 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/ubiButton"
+                android:layout_width="42dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:drawable/ic_menu_mylocation" />
+
+            <ImageButton
                 android:id="@+id/tomarFoto"
                 android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="1"
                 android:background="@android:drawable/ic_menu_camera"
@@ -77,7 +84,7 @@
             <ImageButton
                 android:id="@+id/enviarBtn"
                 android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="1"
                 android:background="@drawable/ic_action_name"
