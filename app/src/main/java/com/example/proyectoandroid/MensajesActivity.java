@@ -37,6 +37,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.iceteck.silicompressorr.SiliCompressor;
 
@@ -120,9 +124,9 @@ public class MensajesActivity extends FragmentActivity {
         token= params.getString("token");
         String tokenB1 = "Bearer " + token;
         id= params.getInt("id");
-        lati=params.getDouble("latitud");;
-        longi=params.getDouble("longitud");;
-        Log.d("Retrofit", "onCreate: " + lati + " , " + longi);
+        lati=params.getDouble("latitud");
+        longi=params.getDouble("longitud");
+        Log.d("Retrofit", "ubicacion en creacion: " + lati + " , " + longi);
         username= params.getString("username");
         Retrofit retrofit= new Retrofit.Builder()
                 .baseUrl("http://chat-conversa.unnamed-chile.com/ws/")
@@ -371,15 +375,30 @@ public class MensajesActivity extends FragmentActivity {
         Intent intent = new Intent(this, MapsActivity.class);
         Bundle parametros = new Bundle();
         parametros.putString("username",username);
+        Toast.makeText(this, username, Toast.LENGTH_SHORT).show();
         parametros.putInt("id",id);
         parametros.putString("token",token);
         intent.putExtras(parametros);
         startActivity(intent);
         finish();
     }
-    public void verLoca(){
 
-    }
+
+//    public void verLoca(View view){
+
+//        Intent intent = new Intent(this, MapsViewActivity.class);
+//        Bundle parametros = getIntent().getExtras();
+//
+//        parametros.putString("username",username);
+//        parametros.putInt("id",id);
+//        parametros.putString("token",token);
+//        parametros.putDouble("latitud",lati);
+//        parametros.putDouble("longitud",longi);
+//        Toast.makeText(this, "MUESTRA"+lati, Toast.LENGTH_SHORT).show();
+//        intent.putExtras(parametros);
+//        startActivity(intent);
+//        finish();
+//    }
 
 
 ////////////////////// Metodos capturar foto

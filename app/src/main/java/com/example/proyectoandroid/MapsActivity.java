@@ -44,8 +44,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String token;
     private int id;
     private String username;
-    private double lati;
-    private  double longi;
+    public double lati;
+    public  double longi;
+    private double inLati;
+    private double inLongi;
 
 
     @Override
@@ -54,6 +56,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         contador = 0;
         Bundle params = getIntent().getExtras();
+        inLati=params.getDouble("latitudeIn");
+        inLongi=params.getDouble("longitudeIn");
         token= params.getString("token");
         id= params.getInt("id");
         username= params.getString("username");
@@ -69,7 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     CameraUpdate pos = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),location.getLongitude()));
                     lati=location.getLatitude();
                     longi=location.getLongitude();
-                    CameraUpdate zoom= CameraUpdateFactory.zoomTo(17);
+                    CameraUpdate zoom= CameraUpdateFactory.zoomTo(10);
                     mMap.moveCamera(pos);
                     mMap.moveCamera(zoom);
                 }
@@ -111,10 +115,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//         Add a marker in Sydney and move the camera
+
+//        Bundle params = getIntent().getExtras();
+//        inLati=params.getDouble("latitudeIn");
+//        inLongi=params.getDouble("longitudeIn");
+//        LatLng sydney = new LatLng(inLati, inLongi);
+//        Toast.makeText(this, inLati+"  "+inLongi, Toast.LENGTH_SHORT).show();
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         enableLocation();
     }
     private void enableLocation(){
@@ -147,6 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         parametros.putString("token",token);
         parametros.putDouble("latitud",lati);
         parametros.putDouble("longitud",longi);
+        Toast.makeText(this, "lat:"+lati+"long:"+longi, Toast.LENGTH_SHORT).show();
         intent.putExtras(parametros);
         startActivity(intent);
         finish();

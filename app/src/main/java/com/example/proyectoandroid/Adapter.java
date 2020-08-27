@@ -1,14 +1,19 @@
 package com.example.proyectoandroid;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +22,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
+import java.util.Locale;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
     static List<Data> mensajes;
@@ -38,6 +46,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 //        ImageButton ;
         Context context;
         List<Data> mensajes;
+        ////LOCATION
+        TextView textViewLatitude,textViewLongitude;
+        TextView showLatitude,showLongitude;
+        Button buttonLocation;
+
 
 
         public MensajesViewHolder(@NonNull View itemView,Context context, List<Data> mensajes, final OnItemClickListener listener) {
@@ -51,6 +64,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 
             imageButtonFotoMensaje =itemView.findViewById(R.id.mensajeFoto);
             imageViewMensajeFoto=itemView.findViewById(R.id.expanded_message);
+            ////location
+            textViewLatitude=itemView.findViewById(R.id.latitude);
+            textViewLongitude=itemView.findViewById(R.id.longitude);
+            buttonLocation=itemView.findViewById(R.id.botonVerLocalizacion);
+            showLatitude=itemView.findViewById(R.id.showLatitude);
+            showLongitude=itemView.findViewById(R.id.showLong);
+            /////////
 
             imageButtonPerfilMensaje.setOnClickListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +127,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
         }
         holder.textViewMensaje.setText(mensaje.getMessage());
         holder.textViewHoraMensaje.setText(mensaje.getDate());
+        if(mensaje.getLongitude()==0 && mensaje.getLatitude()==0){
+            holder.buttonLocation.setVisibility(View.GONE);
+            holder.textViewLatitude.setVisibility(View.GONE);
+            holder.textViewLongitude.setVisibility(View.GONE);
+            holder.showLongitude.setVisibility(View.GONE);
+            holder.showLatitude.setVisibility(View.GONE);
+        }
+        holder.textViewLatitude.setText(mensaje.getLatitude()+"");
+        holder.textViewLongitude.setText(mensaje.getLongitude()+"");
 
 
         if (!mensaje.getUser().getUser_image().equals("")){
@@ -145,7 +174,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
 
         // Funciones on click
         holder.imageButtonPerfilMensaje.setOnClickListener(view -> {
-            Log.d("TAG", "Click imagenPerfil: " + mensaje.getUser().getUsername());
+            Log.d("TAG ", "Click imagenPerfil: " + mensaje.getUser().getUsername());
             if(holder.imageViewFotoPerfilMensaje.getVisibility()==View.VISIBLE){
                 holder.imageViewFotoPerfilMensaje.setVisibility(View.GONE);
             } else {
@@ -154,6 +183,25 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
             }
 
         });
+
+        holder.buttonLocation.setOnClickListener(view -> {
+//            Intent intent = new Intent(view.getContext(),MapsViewActivity.class);
+//            Bundle parametros = new Bundle();
+//            parametros.putDouble("latitudeIn",mensaje.getLatitude());
+//            parametros.putDouble("longitudeIn",mensaje.getLongitude());
+//            view.getContext().startActivity(intent);
+            String uri = String.format(Locale.ENGLISH, "geo:%f,%f", mensaje.getLatitude(), mensaje.getLongitude());
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+            Toast.makeText(context, "Lat, Long: " + mensaje.getLatitude() +" "+mensaje.getLongitude(), Toast.LENGTH_SHORT).show();
+////        intent.putExtras(parametros);
+//
+            Log.d("TAG MAPA", "Lat, Long: " + mensaje.getLatitude() +" "+mensaje.getLongitude());
+//
+//
+        });
+
 
         holder.imageButtonFotoMensaje.setOnClickListener(view -> {
             Log.d("TAG", "Click imagenMensaje: " + mensajes.get(position));
