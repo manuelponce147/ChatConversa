@@ -29,6 +29,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageButton;
@@ -36,6 +37,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.iceteck.silicompressorr.SiliCompressor;
 
@@ -91,6 +96,8 @@ public class MensajesActivity extends FragmentActivity {
     private String token;
     private int id;
     private String username;
+    private double lati;
+    private double longi;
     private EditText mensajeLayoutTxt;
     private ServicioWeb servicio;
     private ImageButton tomarFoto;
@@ -101,11 +108,11 @@ public class MensajesActivity extends FragmentActivity {
     private Adapter adapter;
     List<Data> mensajes;
     private ImageView contenedorFoto;
-
+    private LinearLayout layoutLoca ;
 
 
     private String pathPhoto;
-
+    private int contador;
 
 
     private ImageButton btnImagen;
@@ -117,6 +124,9 @@ public class MensajesActivity extends FragmentActivity {
         token= params.getString("token");
         String tokenB1 = "Bearer " + token;
         id= params.getInt("id");
+        lati=params.getDouble("latitud");
+        longi=params.getDouble("longitud");
+        Log.d("Retrofit", "ubicacion en creacion: " + lati + " , " + longi);
         username= params.getString("username");
         Retrofit retrofit= new Retrofit.Builder()
                 .baseUrl("http://chat-conversa.unnamed-chile.com/ws/")
@@ -124,6 +134,7 @@ public class MensajesActivity extends FragmentActivity {
                 .build();
         servicio = retrofit.create(ServicioWeb.class);
         //////////////
+        layoutLoca =  findViewById(R.id.layoutLoca);
         tomarFoto = findViewById(R.id.tomarFoto);
         linearLayout=findViewById(R.id.layoutPreview);
         contenedorFoto=findViewById(R.id.contenedorImagen);
@@ -177,6 +188,8 @@ public class MensajesActivity extends FragmentActivity {
                     public void onResponse(Call<RespuestaWSLastM> call, Response<RespuestaWSLastM> response) {
                         if(response.isSuccessful()){
                             Data data = new Data();
+                            contador++;
+
                             rv = findViewById(R.id.containerF2);
                             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                             mensajes=response.body().getData();
@@ -248,6 +261,7 @@ public class MensajesActivity extends FragmentActivity {
     public void back(View view){
         parametrosLogoutBack(token,id,username);
     }
+
     public void enviarMensaje(View view){
         mensajeLayoutTxt= (EditText) findViewById(R.id.mensajeLayout);
         RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
@@ -255,6 +269,8 @@ public class MensajesActivity extends FragmentActivity {
         RequestBody msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
                 mensajeLayoutTxt.getText().toString());
         String tokenB = "Bearer " + token;
+        RequestBody latiRb =RequestBody.create(MediaType.parse("multipart/form-data"), lati+"");
+        RequestBody longiRb =RequestBody.create(MediaType.parse("multipart/form-data"), longi+"");
         //// Parte llamada foto
         Call<RespuestaWS> call;
         if(pathPhoto!=null) {
@@ -268,13 +284,30 @@ public class MensajesActivity extends FragmentActivity {
 
 
             ///
-            call = servicio.mSend(idRb, usernameRb, msnRb, file,
-                    null, null, tokenB);
+            if(lati!=0){
+                msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
+                        mensajeLayoutTxt.getText().toString());
+                call = servicio.mSend(idRb, usernameRb, msnRb, file,
+                            latiRb, longiRb, tokenB);
+
+            }else{
+                call = servicio.mSend(idRb, usernameRb, msnRb, file,
+                        null, null, tokenB);
+            }
+
 
 
         }else{
-           call = servicio.mSend(idRb,usernameRb,msnRb,null,
-                    null,null,tokenB);
+            if(lati!=0){
+                msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
+                        mensajeLayoutTxt.getText().toString());
+                call = servicio.mSend(idRb, usernameRb, msnRb, null,
+                        latiRb, longiRb, tokenB);
+
+            }else{
+                call = servicio.mSend(idRb, usernameRb, msnRb, null,
+                        null, null, tokenB);
+            }
 
         }
         call.enqueue(new Callback<RespuestaWS>() {
@@ -301,6 +334,7 @@ public class MensajesActivity extends FragmentActivity {
                                 ImageView activate = (ImageView) findViewById(R.id.contenedorImagen);
                                 activate.setVisibility(View.INVISIBLE);
                                 linearLayout.setVisibility(View.GONE);
+
 
 
 
@@ -336,8 +370,35 @@ public class MensajesActivity extends FragmentActivity {
     }
     public void capturarFoto(View view){
 
-}
+    }
+    public void irMapa(View view){
+        Intent intent = new Intent(this, MapsActivity.class);
+        Bundle parametros = new Bundle();
+        parametros.putString("username",username);
+        Toast.makeText(this, username, Toast.LENGTH_SHORT).show();
+        parametros.putInt("id",id);
+        parametros.putString("token",token);
+        intent.putExtras(parametros);
+        startActivity(intent);
+        finish();
+    }
 
+
+//    public void verLoca(View view){
+
+//        Intent intent = new Intent(this, MapsViewActivity.class);
+//        Bundle parametros = getIntent().getExtras();
+//
+//        parametros.putString("username",username);
+//        parametros.putInt("id",id);
+//        parametros.putString("token",token);
+//        parametros.putDouble("latitud",lati);
+//        parametros.putDouble("longitud",longi);
+//        Toast.makeText(this, "MUESTRA"+lati, Toast.LENGTH_SHORT).show();
+//        intent.putExtras(parametros);
+//        startActivity(intent);
+//        finish();
+//    }
 
 
 ////////////////////// Metodos capturar foto
@@ -445,6 +506,7 @@ public class MensajesActivity extends FragmentActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
 
 
