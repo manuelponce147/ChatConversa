@@ -61,7 +61,8 @@
                 android:layout_width="42dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@android:drawable/ic_menu_mylocation" />
+                android:background="@android:drawable/ic_menu_mylocation"
+                android:onClick="irMapa" />
 
             <ImageButton
                 android:id="@+id/tomarFoto"

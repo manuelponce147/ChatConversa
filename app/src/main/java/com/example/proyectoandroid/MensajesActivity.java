@@ -91,6 +91,8 @@ public class MensajesActivity extends FragmentActivity {
     private String token;
     private int id;
     private String username;
+    private double lati;
+    private double longi;
     private EditText mensajeLayoutTxt;
     private ServicioWeb servicio;
     private ImageButton tomarFoto;
@@ -117,6 +119,9 @@ public class MensajesActivity extends FragmentActivity {
         token= params.getString("token");
         String tokenB1 = "Bearer " + token;
         id= params.getInt("id");
+        lati=params.getDouble("latitud");;
+        longi=params.getDouble("longitud");;
+        Log.d("Retrofit", "onCreate: " + lati + " , " + longi);
         username= params.getString("username");
         Retrofit retrofit= new Retrofit.Builder()
                 .baseUrl("http://chat-conversa.unnamed-chile.com/ws/")
@@ -248,6 +253,7 @@ public class MensajesActivity extends FragmentActivity {
     public void back(View view){
         parametrosLogoutBack(token,id,username);
     }
+
     public void enviarMensaje(View view){
         mensajeLayoutTxt= (EditText) findViewById(R.id.mensajeLayout);
         RequestBody usernameRb =RequestBody.create(MediaType.parse("multipart/form-data"), username);
@@ -255,6 +261,8 @@ public class MensajesActivity extends FragmentActivity {
         RequestBody msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
                 mensajeLayoutTxt.getText().toString());
         String tokenB = "Bearer " + token;
+        RequestBody latiRb =RequestBody.create(MediaType.parse("multipart/form-data"), lati+"");
+        RequestBody longiRb =RequestBody.create(MediaType.parse("multipart/form-data"), longi+"");
         //// Parte llamada foto
         Call<RespuestaWS> call;
         if(pathPhoto!=null) {
@@ -268,13 +276,30 @@ public class MensajesActivity extends FragmentActivity {
 
 
             ///
-            call = servicio.mSend(idRb, usernameRb, msnRb, file,
-                    null, null, tokenB);
+            if(lati!=0){
+                msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
+                        mensajeLayoutTxt.getText().toString()+"_ Mensaje con Localizacion_");
+                call = servicio.mSend(idRb, usernameRb, msnRb, file,
+                            latiRb, longiRb, tokenB);
+
+            }else{
+                call = servicio.mSend(idRb, usernameRb, msnRb, file,
+                        null, null, tokenB);
+            }
+
 
 
         }else{
-           call = servicio.mSend(idRb,usernameRb,msnRb,null,
-                    null,null,tokenB);
+            if(lati!=0){
+                msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
+                        mensajeLayoutTxt.getText().toString()+" *Mensaje con Localizacion*");
+                call = servicio.mSend(idRb, usernameRb, msnRb, null,
+                        latiRb, longiRb, tokenB);
+
+            }else{
+                call = servicio.mSend(idRb, usernameRb, msnRb, null,
+                        null, null, tokenB);
+            }
 
         }
         call.enqueue(new Callback<RespuestaWS>() {
@@ -301,6 +326,7 @@ public class MensajesActivity extends FragmentActivity {
                                 ImageView activate = (ImageView) findViewById(R.id.contenedorImagen);
                                 activate.setVisibility(View.INVISIBLE);
                                 linearLayout.setVisibility(View.GONE);
+
 
 
 
@@ -336,8 +362,17 @@ public class MensajesActivity extends FragmentActivity {
     }
     public void capturarFoto(View view){
 
-}
-
+    }
+    public void irMapa(View view){
+        Intent intent = new Intent(this, MapsActivity.class);
+        Bundle parametros = new Bundle();
+        parametros.putString("username",username);
+        parametros.putInt("id",id);
+        parametros.putString("token",token);
+        intent.putExtras(parametros);
+        startActivity(intent);
+        finish();
+    }
 
 
 ////////////////////// Metodos capturar foto
@@ -445,6 +480,7 @@ public class MensajesActivity extends FragmentActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
 
 

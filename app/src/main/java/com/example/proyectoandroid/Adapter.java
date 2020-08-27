@@ -102,7 +102,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MensajesViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MensajesViewHolder holder, int position) {
         Data mensaje= mensajes.get(position);
-        holder.textViewNombre.setText(mensaje.getUser().getUsername());
+        if(mensaje.getUser().getUsername().length()>=5){
+            holder.textViewNombre.setText(mensaje.getUser().getUsername());
+        }
         holder.textViewMensaje.setText(mensaje.getMessage());
         holder.textViewHoraMensaje.setText(mensaje.getDate());
 
