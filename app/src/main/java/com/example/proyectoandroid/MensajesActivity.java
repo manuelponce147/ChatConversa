@@ -286,7 +286,7 @@ public class MensajesActivity extends FragmentActivity {
             ///
             if(lati!=0){
                 msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
-                        mensajeLayoutTxt.getText().toString()+"_ Mensaje con Localizacion_");
+                        mensajeLayoutTxt.getText().toString());
                 call = servicio.mSend(idRb, usernameRb, msnRb, file,
                             latiRb, longiRb, tokenB);
 
@@ -300,7 +300,7 @@ public class MensajesActivity extends FragmentActivity {
         }else{
             if(lati!=0){
                 msnRb =RequestBody.create(MediaType.parse("multipart/form-data"),
-                        mensajeLayoutTxt.getText().toString()+" *Mensaje con Localizacion*");
+                        mensajeLayoutTxt.getText().toString());
                 call = servicio.mSend(idRb, usernameRb, msnRb, null,
                         latiRb, longiRb, tokenB);
 
